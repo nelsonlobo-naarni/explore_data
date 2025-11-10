@@ -15,9 +15,13 @@ from datetime import datetime, date, timedelta
 import pendulum
 import pandas as pd
 import numpy as np
+from matplotlib.backends.backend_pdf import PdfPages
+import matplotlib.pyplot as plt
+
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
+pd.set_option('display.max_colwidth', None)
 
 # %%
 # Add parent directory to path
@@ -104,21 +108,21 @@ logging.info(f"🔍 Query window (IST): {ist_start} → {ist_end}")
 # 4. Off
 
 # %%
-# query = f"""
-# select 
-#     id,date(timestamp + interval '5:30' hour to minute) as dateval,count(*) 
-# FROM 
-#     facts_prod.can_parsed_output_100
-# where 
-#     id in ('6') and 
-#     timestamp >= TIMESTAMP '{utc_start.strftime('%Y-%m-%d %H:%M:%S')}' and
-#     timestamp < TIMESTAMP '{utc_end.strftime('%Y-%m-%d %H:%M:%S')}'
-# group by 1,2"""
+query = f"""
+select 
+    id,date(timestamp + interval '5:30' hour to minute) as dateval,count(*) 
+FROM 
+    facts_prod.can_parsed_output_100
+where 
+    id in ('6') and 
+    timestamp >= TIMESTAMP '{utc_start.strftime('%Y-%m-%d %H:%M:%S')}' and
+    timestamp < TIMESTAMP '{utc_end.strftime('%Y-%m-%d %H:%M:%S')}'
+group by 1,2"""
 
-# conn = connect_to_trino(host="analytics.internal.naarni.com",port=443,user="admin",catalog="adhoc",schema="default")
+conn = connect_to_trino(host="analytics.internal.naarni.com",port=443,user="admin",catalog="adhoc",schema="default")
 
-# df = execute_query(conn, f"SELECT * FROM {REPORT_TABLE} LIMIT 5", return_results=True)
-# display(df)
+df = execute_query(conn, f"SELECT * FROM {REPORT_TABLE} LIMIT 5", return_results=True)
+display(df.head())
 
 # %%
 def fetch_battery_data(start_date, end_date, vehicle_ids):
@@ -150,7 +154,7 @@ def fetch_battery_data(start_date, end_date, vehicle_ids):
         temperaturedifferencealarm, chargingcurrentalarm, dischargecurrentalarm,
         vehiclereadycondition, gun_connection_status, ignitionstatus,
         vehicle_speed_vcu,gear_position,bat_soc,
-        pack1_cellmax_temperature, pack1_maxtemperature_cell_number, pack1_cell_min_temperature, pack1_celltemperature_cellnumber,
+        pack1_cellmax_temperature, pack1_cell_min_temperature, pack1_maxtemperature_cell_number,  pack1_celltemperature_cellnumber,
         bat_voltage,cellmax_voltagecellnumber,cell_max_voltage,cellminvoltagecellnumber,cell_min_voltage,
         lowpressureoilpumpfaultcode,bms_fault_code,vcu_fault_code,fiveinone_faultcode
     FROM 
@@ -259,6 +263,7 @@ def process_battery_data(df_cpo100, df_can_ac):
     # Add other columns from cpo100
     cpo100_cols = ['dt', 'ignitionstatus', 'vehiclereadycondition', 'gun_connection_status',
                    'vehicle_speed_vcu','gear_position','bat_soc',
+                # pack1_cellmax_temperature, pack1_cell_min_temperature, pack1_maxtemperature_cell_number, pack1_celltemperature_cellnumber,                   
                    'pack1_cellmax_temperature', 'pack1_cell_min_temperature',
                    'pack1_maxtemperature_cell_number','pack1_celltemperature_cellnumber',
                    'bat_voltage','cellmax_voltagecellnumber','cell_max_voltage','cellminvoltagecellnumber','cell_min_voltage']
@@ -285,6 +290,7 @@ def process_battery_data(df_cpo100, df_can_ac):
     can_ac_cols = ['b2t_tms_control_cmd', 'b2t_set_water_out_temp', 
                   'b2t_battery_min_temp', 'b2t_battery_max_temp', 'tms_working_mode',
                   'coolant_out_temp', 'coolant_in_temp', 'hv_voltage',
+                  'comp_target_freq','comp_running_freq',
                   'comp_status','tms_fault_code','ac_fault_code']
 
     for col in can_ac_cols:
@@ -346,6 +352,18 @@ df, df_cpo100, df_can_ac = get_all_battery_data('2025-10-01', '2025-10-02', ['6'
 display(df.head(10))
 
 # %%
+len(df)
+
+# %%
+df_can_ac.comp_running_freq.describe()
+
+# %%
+df_can_ac.comp_running_freq.value_counts(dropna=False).sort_values()
+
+# %%
+df_cpo100.batterycoolingstate.describe()
+
+# %%
 # display(df_cpo100.head())
 # display(df_cpo100.lowpressureoilpumpfaultcode.value_counts())
 # display(df_cpo100.bms_fault_code.value_counts())
@@ -354,6 +372,16 @@ display(df.head(10))
 # %%
 def safe_get(df, col):
     return df[col] if col in df.columns else pd.Series(dtype=float)
+
+def safe_min(series):
+    """Return min safely without warnings on empty or all-NaN slices."""
+    s = pd.to_numeric(series, errors='coerce').dropna()
+    return round(s.min(), 3) if len(s) > 0 else np.nan
+
+def safe_max(series):
+    """Return max safely without warnings on empty or all-NaN slices."""
+    s = pd.to_numeric(series, errors='coerce').dropna()
+    return round(s.max(), 3) if len(s) > 0 else np.nan
 
 def safe_median(series):
     """Return median safely without warnings on empty or all-NaN slices."""
@@ -396,11 +424,30 @@ def process_tms_transitions(df: pd.DataFrame) -> pd.DataFrame:
     if pd.isna(df.loc[0, "ac_fault_code"]):
         df.loc[0, "ac_fault_code"] = "No Fault"  # or whichever baseline makes sense
 
-    # --- Define key columns ---
-    transition_cols = ["b2t_tms_control_cmd", "tms_working_mode", "comp_status"]
-    temp_cols = ["b2t_set_water_out_temp", "b2t_battery_max_temp", "coolant_out_temp", "coolant_in_temp"]
-    volt_cols = ["bat_voltage","hv_voltage","cellmax_voltagecellnumber", "cell_max_voltage", "cellminvoltagecellnumber", "cell_min_voltage"]
+    rename_map = {
+        "b2t_battery_min_temp": "batt_mintemp",
+        "b2t_battery_max_temp": "batt_maxtemp",        
+        "coolant_in_temp": "coolant_in",
+        "coolant_out_temp": "coolant_out",
+        "bat_soc": "soc",
+        "pack1_celltemperature_cellnumber": "mintemp_cellnum",
+        "pack1_maxtemperature_cell_number": "maxtemp_cellnum",
+        "cellminvoltagecellnumber": "minvolt_cellnum",
+        "cellmax_voltagecellnumber": "maxvolt_cellnum",
+        "cell_max_voltage": "max_cellvolt",
+        "cell_min_voltage": "min_cellvolt",
+        "vehiclereadycondition": "veh_status",
+        "gun_connection_status": "gun_status",
+    }
+    df.rename(columns={k: v for k, v in rename_map.items() if k in df.columns}, inplace=True)
 
+    # --- Define key columns ---
+    transition_cols = ["b2t_tms_control_cmd", "tms_working_mode"]
+    # "b2t_set_water_out_temp", 
+    temp_cols = ["batt_mintemp", "batt_maxtemp", "coolant_out", "coolant_in", 
+                 "mintemp_cellnum", "maxtemp_cellnum", "minvolt_cellnum", "maxvolt_cellnum",
+                 "max_cellvolt", "min_cellvolt", "bat_voltage", "hv_voltage", "soc"]
+    
     # --- Identify transitions ---
     change_mask = (df[transition_cols] != df[transition_cols].shift()).any(axis=1)
     df["state_group"] = change_mask.cumsum()
@@ -416,14 +463,30 @@ def process_tms_transitions(df: pd.DataFrame) -> pd.DataFrame:
 
         # Determine vehicle mode
         ignition = start_row.get("ignitionstatus", np.nan)
-        vehicle_ready = start_row.get("vehiclereadycondition", np.nan)
-        gun_status = start_row.get("gun_connection_status", np.nan)
+        vehicle_ready = start_row.get("veh_status", np.nan)
+        gun_status = start_row.get("gun_status", np.nan)
         if vehicle_ready == 1.0:
             mode = "Drive"
         elif gun_status == 1.0:
             mode = "Charging/Park"
         else:
             mode = "Idle/Other"
+
+        # --- Compressor metrics within the group ---
+        comp_col = "comp_status"
+        if comp_col in group.columns:
+            comp = group[["timestamp", comp_col]].copy()
+            comp[comp_col] = comp[comp_col].astype(str).str.strip().str.lower()
+            comp["next_time"] = comp["timestamp"].shift(-1)
+            comp["interval_min"] = (comp["next_time"] - comp["timestamp"]).dt.total_seconds() / 60.0
+
+            # Calculate total minutes in each state
+            on_time = comp.loc[comp[comp_col] == "on", "interval_min"].sum(skipna=True)
+            off_time = comp.loc[comp[comp_col] == "off", "interval_min"].sum(skipna=True)
+            duty_cycle = (on_time * 100.0) / (on_time + off_time) if (on_time + off_time) > 0 else np.nan
+        else:
+            on_time = off_time = duty_cycle = np.nan
+
 
         # Build summary record
         record = {
@@ -433,50 +496,35 @@ def process_tms_transitions(df: pd.DataFrame) -> pd.DataFrame:
             "mode": mode,
             "vehicle_speed_start": round(start_row.get("vehicle_speed_vcu", np.nan), 1),
             "ignitionstatus_start": start_row.get("ignitionstatus", np.nan),
-            "vehilceready_start": start_row.get("vehiclereadycondition", np.nan),
-            "gun_connection_status_start": start_row.get("gun_connection_status", np.nan),
+            "veh_status_start": start_row.get("veh_status", np.nan),
+            "gun_status_start": start_row.get("gun_status", np.nan),
             **{f"{col}_start": start_row[col] for col in temp_cols},
             **{f"{col}_end": end_row[col] for col in temp_cols},
             **{col: start_row[col] for col in transition_cols},
+            
             # Temperature statistics
-            "b2t_battery_max_temp_med": safe_median(group["b2t_battery_max_temp"]),
-            "coolant_out_temp_med": safe_median(group["coolant_out_temp"]),
-            "coolant_in_temp_med": safe_median(group["coolant_in_temp"]),
+            "batt_mintemp_lowest": safe_min(group["batt_mintemp"]),
+            "batt_maxtemp_highest": safe_max(group["batt_maxtemp"]),
+            "batt_mintemp_med": safe_median(group["batt_mintemp"]),
+            "batt_maxtemp_med": safe_median(group["batt_maxtemp"]),
+            "coolant_out_med": safe_median(group["coolant_out"]),
+            "coolant_in_med": safe_median(group["coolant_in"]),
 
             # Temperature cell data
-            "mintemp_cellnum_start": start_row.get("pack1_celltemperature_cellnumber", np.nan),
-            "mintemp_cellnum_end": end_row.get("pack1_celltemperature_cellnumber", np.nan),
-            "mintemp_cellnum_mode": scalar_mode(group["pack1_celltemperature_cellnumber"]),
-            
-            "maxtemp_cellnum_start": start_row.get("pack1_maxtemperature_cell_number", np.nan),
-            "maxtemp_cellnum_end": end_row.get("pack1_maxtemperature_cell_number", np.nan),
-            "maxtemp_cellnum_mode": scalar_mode(group["pack1_maxtemperature_cell_number"]),
+            "mintemp_cellnum_mode": scalar_mode(group["mintemp_cellnum"]),            
+            "maxtemp_cellnum_mode": scalar_mode(group["maxtemp_cellnum"]),
+
+            # Compressor metrics
+            "comp_status_on_time": round(on_time, 2),
+            "comp_status_off_time": round(off_time, 2),
+            "comp_duty_cycle": round(duty_cycle, 2),
 
             # Voltage cell data
-            "minvolt_cellnum_start": start_row.get("cellminvoltagecellnumber", np.nan),
-            "minvolt_cellnum_end": end_row.get("cellminvoltagecellnumber", np.nan),
-            "minvolt_cellnum_mode": scalar_mode(safe_get(group, "cellminvoltagecellnumber")),
-
-            "cell_min_voltage_start": start_row.get("cell_min_voltage", np.nan),
-            "cell_min_voltage_end": end_row.get("cell_min_voltage", np.nan),
-            "cell_min_voltage_med": safe_median(group["cell_min_voltage"]),                
-            
-            "maxvolt_cellnum_start": start_row.get("cellmax_voltagecellnumber", np.nan),
-            "maxvolt_cellnum_end": end_row.get("cellmax_voltagecellnumber", np.nan),            
-            "maxvolt_cellnum_mode": scalar_mode(safe_get(group, "cellmax_voltagecellnumber")),
-
-            "cell_max_voltage_start": start_row.get("cell_max_voltage", np.nan),
-            "cell_max_voltage_end": end_row.get("cell_max_voltage", np.nan),
-            "cell_max_voltage_med": safe_median(group["cell_max_voltage"]),
-
-            "bat_voltage_start": start_row.get("bat_voltage", np.nan),
-            "bat_voltage_end": end_row.get("bat_voltage", np.nan),
+            "minvolt_cellnum_mode": scalar_mode(safe_get(group, "minvolt_cellnum")),
+            "maxvolt_cellnum_mode": scalar_mode(safe_get(group, "maxvolt_cellnum")),
+            "min_cellvolt_med": safe_median(group["min_cellvolt"]),
+            "max_cellvolt_med": safe_median(group["max_cellvolt"]),
             "bat_voltage_med": safe_median(group["bat_voltage"]),
-
-            "bat_soc_start": start_row.get("bat_soc", np.nan),
-            "bat_soc_end": end_row.get("bat_soc", np.nan),
-            
-            "hv_voltage_start": start_row.get("hv_voltage", np.nan),
         }
 
         summary_list.append(record)
@@ -487,19 +535,20 @@ def process_tms_transitions(df: pd.DataFrame) -> pd.DataFrame:
 
     # --- Reorder columns for readability ---
     ordered_cols = [
-        "start_time", "end_time", "duration_mins", "mode", "vehicle_speed_start",
-        "vehilceready_start", "gun_connection_status_start","bat_soc_start","bat_soc_end",
-        "b2t_battery_max_temp_start", "b2t_battery_max_temp_end", "b2t_battery_max_temp_med",
+        "start_time", "end_time", "duration_mins", "mode", "b2t_tms_control_cmd", "tms_working_mode",
+        "vehicle_speed_start", "veh_status_start", "gun_status_start","soc_start","soc_end",
+        "batt_maxtemp_start", "batt_maxtemp_end", "batt_maxtemp_med","batt_maxtemp_highest",
+        "batt_mintemp_start", "batt_mintemp_end", "batt_mintemp_med","batt_mintemp_lowest",
         "mintemp_cellnum_start", "mintemp_cellnum_end", "mintemp_cellnum_mode",
         "maxtemp_cellnum_start", "maxtemp_cellnum_end", "maxtemp_cellnum_mode",
-        "coolant_out_temp_start", "coolant_out_temp_end", "coolant_out_temp_med",
-        "coolant_in_temp_start", "coolant_in_temp_end", "coolant_in_temp_med",
-        "cell_max_voltage_start", "cell_max_voltage_end","cell_max_voltage_med", 
-        "cell_min_voltage_start", "cell_min_voltage_end","cell_min_voltage_med",
+        "comp_status_on_time","comp_status_off_time","comp_duty_cycle",
+        "coolant_out_start", "coolant_out_end", "coolant_out_med",
+        "coolant_in_start", "coolant_in_end", "coolant_in_med", 
+        "min_cellvolt_start", "min_cellvolt_end","min_cellvolt_med",                
         "minvolt_cellnum_start", "minvolt_cellnum_end", "minvolt_cellnum_mode",
+        "max_cellvolt_start", "max_cellvolt_end","max_cellvolt_med",        
         "maxvolt_cellnum_start", "maxvolt_cellnum_end", "maxvolt_cellnum_mode",
-        "bat_voltage_start", "bat_voltage_end", "bat_voltage_med","hv_voltage_start",
-        "b2t_tms_control_cmd", "tms_working_mode", "comp_status"
+        "bat_voltage_start", "bat_voltage_end", "bat_voltage_med"
     ]
 
     # --- Clean up integer-like columns ---
@@ -520,177 +569,113 @@ def process_tms_transitions(df: pd.DataFrame) -> pd.DataFrame:
             )
 
 
-    return state_summary.reindex(columns=ordered_cols)
+    return df, state_summary.reindex(columns=ordered_cols)
+    # return state_summary
+
+# %% [markdown]
+# - batt_mintemp, mintemp_cellnum
+# - batt_maxtemp, maxtemp_cellnum
+# - coolant_out
+# - coolant_in
+# - min_cellvolt, minvolt_cellnum
+# - max_cellvolt, maxvolt_cellnum
+# - bat_volt
 
 # %%
 # --- Example usage ---
-state_summary = process_tms_transitions(df)
-state_summary.head(10)
+# Correct usage
+df_with_state,state_summary = process_tms_transitions(df)
+state_summary
 
 # %%
-state_summary.to_csv('battery_temp_v2.csv', index=False)
+import matplotlib.pyplot as plt
+import pandas as pd
+
+def plot_tms_session(df: pd.DataFrame, group_id: int):
+    """
+    Plot TMS temperature and voltage evolution for a given transition session (state_group).
+    Works directly with the raw dataframe produced before summarisation.
+    """
+    if "state_group" not in df.columns:
+        raise KeyError("Column 'state_group' not found. Ensure process_tms_transitions() was used on this data.")
+
+    session = df[df["state_group"] == group_id].copy()
+    if session.empty:
+        print(f"No data found for state_group {group_id}")
+        return
+
+    session = session.sort_values("timestamp")
+
+    fig, ax1 = plt.subplots(figsize=(10, 5))
+
+    ax1.plot(session["timestamp"], session["batt_mintemp"], label="Batt Min Temp", linewidth=2)
+    ax1.plot(session["timestamp"], session["batt_maxtemp"], label="Batt Max Temp", linewidth=2)
+    ax1.plot(session["timestamp"], session["coolant_in"], label="Coolant In", linestyle="--")
+    ax1.plot(session["timestamp"], session["coolant_out"], label="Coolant Out", linestyle="--")
+
+    ax1.set_xlabel("Timestamp")
+    ax1.set_ylabel("Temperature (°C)")
+    ax1.legend(loc="upper left")
+    ax1.grid(alpha=0.3)
+
+    ax2 = ax1.twinx()
+    ax2.plot(session["timestamp"], session["bat_voltage"], color="white", linestyle=":", label="Battery Voltage (V)")
+    ax2.set_ylabel("Voltage (V)")
+    ax2.legend(loc="upper right")
+
+    title_info = f"TMS Session {group_id} | Mode: {session['tms_working_mode'].iloc[0]} | Cmd: {session['b2t_tms_control_cmd'].iloc[0]}"
+    plt.title(title_info)
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_session_summary(state_summary: pd.DataFrame):
+    """
+    Visualize session-wise deltas (start → end) from the state_summary dataframe.
+    Shows how temperature, coolant, and voltage shifted in each transition.
+    """
+    if not {"batt_maxtemp_start", "batt_maxtemp_end"}.issubset(state_summary.columns):
+        raise KeyError("state_summary missing expected start/end columns. Verify output of process_tms_transitions().")
+
+    summary = state_summary.copy()
+    summary["batt_maxtemp_delta"] = summary["batt_maxtemp_end"] - summary["batt_maxtemp_start"]
+    summary["batt_mintemp_delta"] = summary["batt_mintemp_end"] - summary["batt_mintemp_start"]
+    summary["coolant_out_delta"] = summary["coolant_out_end"] - summary["coolant_out_start"]
+    summary["coolant_in_delta"] = summary["coolant_in_end"] - summary["coolant_in_start"]
+    summary["bat_voltage_delta"] = summary["bat_voltage_end"] - summary["bat_voltage_start"]
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(summary.index, summary["batt_mintemp_delta"], label="Batt Min Temp Δ", marker="o")
+    plt.plot(summary.index, summary["batt_maxtemp_delta"], label="Batt Max Temp Δ", marker="o")
+    plt.plot(summary.index, summary["coolant_out_delta"], label="Coolant Out Δ", marker="o")
+    plt.plot(summary.index, summary["coolant_in_delta"], label="Coolant In Δ", marker="o")
+    plt.plot(summary.index, summary["bat_voltage_delta"], label="Battery Voltage Δ", marker="o")
+
+    plt.title("Session-wise Parameter Change (End − Start)")
+    plt.xlabel("Session Index")
+    plt.ylabel("Δ Value (°C or V)")
+    plt.legend()
+    plt.grid(alpha=0.3)
+    plt.tight_layout()
+    plt.show()
 
 # %%
-# --- Clean compressor status ---
-df["comp_status_clean"] = (df["comp_status"].ffill().replace({"nan": np.nan}))
-# ensure first value isn't NaN to avoid false trigger at start
-if pd.isna(df.loc[0, "comp_status_clean"]):
-    df.loc[0, "comp_status_clean"] = "Off"  # or whichever baseline makes sense
+df_with_state[df_with_state['state_group']==12].iloc[-1].timestamp
 
-# --- Clean AC fault code ---
-df["ac_fault_code_clean"] = (df["ac_fault_code"].ffill().replace({"nan": np.nan}))
-# ensure first value isn't NaN to avoid false trigger at start
-if pd.isna(df.loc[0, "ac_fault_code_clean"]):
-    df.loc[0, "ac_fault_code_clean"] = "No Fault"  # or whichever baseline makes sense
+# %%
+# Plot detailed single session (raw time-series)
+plot_tms_session(df_with_state, group_id=1)
+
+# Plot summary overview (start-end deltas)
+# plot_session_summary(state_summary)
 
 
-
-# Identify where transitions are detected
-transition_cols = ["b2t_tms_control_cmd", "tms_working_mode", "tms_fault_code", "comp_status_clean", "ac_fault_code_clean"]
-change_mask = (df[transition_cols] != df[transition_cols].shift())
-
-# Add debugging info: which column changed
-df["_change_cols"] = change_mask.apply(lambda row: ",".join(row.index[row]), axis=1)
-transitions_debug = df.loc[change_mask.any(axis=1), ["timestamp", "_change_cols"] + transition_cols]
-
-transitions_debug.head(10)
-
+# %%
+wait
 
 # %% [markdown]
-# 1. b2t_battery_max_temp, mintemp_cellnum, maxtemp_cellnum, 
-# 2. coolant_out_temp, coolant_in_temp,
-# 3. cell_max_voltage, cell_min_voltage,
-# 4. minvolt_cellnum, maxvolt_cellnum, 
-# 5. b2t_tms_control_cmd, tms_working_mode, comp_status
-
-# %%
-# --- Copy base dataframe ---
-df_summary = state_summary.copy()
-
-# --- Basic prep ---
-comp_norm = df_summary["comp_status"].astype(str).str.strip().str.lower()
-df_summary["comp_status_on_time"] = np.where(comp_norm.eq("on"), df_summary["duration_mins"], 0.0)
-df_summary["comp_status_off_time"] = np.where(comp_norm.eq("off"), df_summary["duration_mins"], 0.0)
-
-# --- Rename key start/end attributes for clarity ---
-rename_map = {
-    "b2t_battery_max_temp_start": "batt_temp_start",
-    "b2t_battery_max_temp_end": "batt_temp_end",
-    "coolant_in_temp_start": "coolant_in_start",
-    "coolant_in_temp_end": "coolant_in_end",
-    "coolant_out_temp_start": "coolant_out_start",
-    "coolant_out_temp_end": "coolant_out_end",
-    "bat_soc_start": "soc_start",
-    "bat_soc_end": "soc_end"
-}
-df_summary.rename(columns={k: v for k, v in rename_map.items() if k in df_summary.columns}, inplace=True)
-
-# --- Helper for safe deltas ---
-def safe_delta(start, end):
-    if start in df_summary.columns and end in df_summary.columns:
-        return df_summary[end] - df_summary[start]
-    return np.nan
-
-# --- Derived metrics ---
-df_summary["batt_temp_delta"] = safe_delta("batt_temp_start", "batt_temp_end")
-df_summary["batt_temp_med"] = df_summary.get("b2t_battery_max_temp_med", np.nan)
-df_summary["temp_rate_C_per_min"] = df_summary["batt_temp_delta"] / df_summary["duration_mins"]
-df_summary["soc_delta"] = safe_delta("soc_start", "soc_end")
-
-# --- Voltage metrics for modal cells ---
-if {"cell_max_voltage_med", "cell_min_voltage_med"}.issubset(df_summary.columns):
-    df_summary["max_cellvolt"] = df_summary["cell_max_voltage_med"]
-    df_summary["min_cellvolt"] = df_summary["cell_min_voltage_med"]
-else:
-    df_summary["max_cellvolt"] = np.nan
-    df_summary["min_cellvolt"] = np.nan
-
-# --- Compressor duty cycle ---
-df_summary["comp_duty_cycle"] = (
-    df_summary["comp_status_on_time"] * 100.0 /
-    (df_summary["comp_status_on_time"] + df_summary["comp_status_off_time"])
-)
-
-# --- Build a contiguous run ID to separate independent segments ---
-state_key = (
-    df_summary["mode"].astype(str) + "|" +
-    df_summary["b2t_tms_control_cmd"].astype(str) + "|" +
-    df_summary["tms_working_mode"].astype(str)
-)
-df_summary["state_run_id"] = (state_key != state_key.shift()).cumsum()
-
-# --- Grouping and aggregation ---
-group_cols = ["state_run_id", "mode", "b2t_tms_control_cmd", "tms_working_mode"]
-agg_dict = {
-    "start_time": "first",
-    "end_time": "last",
-    "duration_mins": "sum",
-    # Compressor metrics
-    "comp_status_on_time": "sum",
-    "comp_status_off_time": "sum",
-    "comp_duty_cycle": "mean",
-    # Battery temperature
-    "batt_temp_start": "first",
-    "batt_temp_end": "last",
-    "batt_temp_med": "median",
-    # Coolant start/end
-    "coolant_in_start": "first",
-    "coolant_in_end": "last",
-    "coolant_out_start": "first",
-    "coolant_out_end": "last",
-    # SOC
-    "soc_start": "first",
-    "soc_end": "last",
-    # Voltage (modal cell numbers + actual voltages)
-    "maxvolt_cellnum_mode": lambda x: x.mode().iloc[0] if not x.mode().empty else np.nan,
-    "max_cellvolt": "mean",
-    "minvolt_cellnum_mode": lambda x: x.mode().iloc[0] if not x.mode().empty else np.nan,
-    "min_cellvolt": "mean",
-}
-
-summary = df.groupby(group_cols, dropna=False).agg(agg_dict).reset_index()
-
-# --- Compute post-aggregation deltas (true start → end transitions) ---
-summary["soc_delta"] = summary["soc_end"] - summary["soc_start"]
-summary["batt_temp_delta"] = summary["batt_temp_end"] - summary["batt_temp_start"]
-summary["temp_rate_C_per_min"] = summary["batt_temp_delta"] / summary["duration_mins"]
-summary["coolant_in_delta"] = summary["coolant_in_end"] - summary["coolant_in_start"]
-summary["coolant_out_delta"] = summary["coolant_out_end"] - summary["coolant_out_start"]
-summary["voltage_delta"] = summary["max_cellvolt"] - summary["min_cellvolt"]
-
-# --- Rounding and cleanup ---
-summary = summary.round({
-    "comp_duty_cycle": 2,
-    "temp_rate_C_per_min": 3,
-    "batt_temp_delta": 2,
-    "soc_delta": 2,
-    "coolant_in_delta": 3,
-    "coolant_out_delta": 3,
-    "max_cellvolt": 4,
-    "min_cellvolt": 4,
-    "voltage_delta": 4
-})
-
-# --- Simplify timestamp precision ---
-for col in ["start_time", "end_time"]:
-    if col in summary.columns:
-        summary[col] = pd.to_datetime(summary[col]).dt.strftime("%Y-%m-%d %H:%M:%S")
-
-
-display(summary.head(10))
-
-# %%
-summary[['state_run_id', 'mode', 'b2t_tms_control_cmd', 'tms_working_mode','start_time', 'end_time', 'duration_mins',
-        'batt_temp_start', 'batt_temp_end', 'batt_temp_med', 'batt_temp_delta', 'temp_rate_C_per_min',
-        'coolant_in_start', 'coolant_in_end', 'coolant_in_delta',
-        'coolant_out_start', 'coolant_out_end', 'coolant_out_delta',
-        'comp_status_on_time', 'comp_status_off_time', 'comp_duty_cycle',
-        'soc_start', 'soc_end', 'soc_delta',
-        'maxvolt_cellnum_mode', 'max_cellvolt',
-        'minvolt_cellnum_mode', 'min_cellvolt', 'voltage_delta']]
-
-# %%
-# summary.to_csv('battery_temp_summary_v2.csv', index=False)
-display(summary[summary['mode']=='Charging/Park'])
+# 1. Compressor Duty Cycle Analysis: based on 300seconds buckets for each state_group
+# 2. What is the trigger for self circulation
+# 3. When does the 
 
 
