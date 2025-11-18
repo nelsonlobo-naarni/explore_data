@@ -18,7 +18,6 @@ import numpy as np
 from matplotlib.backends.backend_pdf import PdfPages
 import matplotlib.pyplot as plt
 
-
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_colwidth', None)
@@ -54,18 +53,18 @@ REPORT_TABLE = f"adhoc.facts_prod.{TABLE_NAME}"
 REPORT_S3_LOCATION = f"s3a://naarni-data-lake/aqua/warehouse/facts_prod.db/{TABLE_NAME}/"
 
 # %%
-date_str = "2025-10-27"  # Date for which data is to be processed
+date_str = "2025-10-01"  # Date for which data is to be processed
 
 # Parse the date string as a date object
 target_date = datetime.strptime(date_str, "%Y-%m-%d").date()
 
 # Create datetime objects for the start and end of the day in IST
 ist_start = datetime.combine(target_date, datetime.min.time())
-ist_end = ist_start + timedelta(days=1)
+ist_end = ist_start + timedelta(days=3)
 
 # Convert IST to UTC for the database query
 # IST is UTC+5:30, so we subtract 5 hours and 30 minutes
-utc_start = ist_start - timedelta(hours=5, minutes=30)
+utc_start = ist_start - timedelta(hours=5, minutes=30) 
 utc_end = ist_end - timedelta(hours=5, minutes=30)
 
 logging.info(f"🔍 Query window (UTC): {utc_start} → {utc_end}")
@@ -108,21 +107,22 @@ logging.info(f"🔍 Query window (IST): {ist_start} → {ist_end}")
 # 4. Off
 
 # %%
-query = f"""
-select 
-    id,date(timestamp + interval '5:30' hour to minute) as dateval,count(*) 
-FROM 
-    facts_prod.can_parsed_output_100
-where 
-    id in ('6') and 
-    timestamp >= TIMESTAMP '{utc_start.strftime('%Y-%m-%d %H:%M:%S')}' and
-    timestamp < TIMESTAMP '{utc_end.strftime('%Y-%m-%d %H:%M:%S')}'
-group by 1,2"""
+# query = f"""
+# select 
+#     id,date(timestamp + interval '5:30' hour to minute) as dateval,count(*) 
+# FROM 
+#     facts_prod.can_parsed_output_100
+# where 
+#     id in ('6') and 
+#     timestamp >= TIMESTAMP '{utc_start.strftime('%Y-%m-%d %H:%M:%S')}' and
+#     timestamp < TIMESTAMP '{utc_end.strftime('%Y-%m-%d %H:%M:%S')}'
+# group by 1,2"""
 
-conn = connect_to_trino(host="analytics.internal.naarni.com",port=443,user="admin",catalog="adhoc",schema="default")
+# # conn = connect_to_trino(host="analytics.internal.naarni.com",port=443,user="admin",catalog="adhoc",schema="default")
+# conn = connect_to_trino(host="trino.internal.naarni.com",port=443,user="admin",catalog="adhoc",schema="default")
 
-df = execute_query(conn, f"SELECT * FROM {REPORT_TABLE} LIMIT 5", return_results=True)
-display(df.head())
+# df = execute_query(conn, f"SELECT * FROM {REPORT_TABLE} LIMIT 5", return_results=True)
+# display(df)
 
 # %%
 def fetch_battery_data(start_date, end_date, vehicle_ids):
@@ -143,13 +143,13 @@ def fetch_battery_data(start_date, end_date, vehicle_ids):
     vehicle_ids_str = ', '.join([f"'{vid}'" for vid in vehicle_ids])
     
     # Connect to Trino
-    conn = connect_to_trino(host="analytics.internal.naarni.com", port=443, user="admin", 
-                           catalog="adhoc", schema="default")
+    # conn = connect_to_trino(host="analytics.internal.naarni.com", port=443, user="admin", catalog="adhoc", schema="default")
+    conn = connect_to_trino(host="trino.internal.naarni.com",port=443,user="admin",catalog="adhoc",schema="default")
 
     # Query for cpo100 data
     cpo100_query = f"""
     SELECT 
-        id, CAST(timestamp AS TIMESTAMP) AT TIME ZONE 'Asia/Kolkata' as timestamp, dt, 
+        id,timestamp,dt, 
         batterycoolingstate, batterycoolanttemperature,
         temperaturedifferencealarm, chargingcurrentalarm, dischargecurrentalarm,
         vehiclereadycondition, gun_connection_status, ignitionstatus,
@@ -158,17 +158,17 @@ def fetch_battery_data(start_date, end_date, vehicle_ids):
         bat_voltage,cellmax_voltagecellnumber,cell_max_voltage,cellminvoltagecellnumber,cell_min_voltage,
         lowpressureoilpumpfaultcode,bms_fault_code,vcu_fault_code,fiveinone_faultcode
     FROM 
-        facts_prod.can_parsed_output_100
+        facts_prod.can_parsed_output_all
     WHERE 
         id IN ({vehicle_ids_str})
-        AND DATE(timestamp AT TIME ZONE 'Asia/Kolkata') >= DATE('{start_date}')
-        AND DATE(timestamp AT TIME ZONE 'Asia/Kolkata') <= DATE('{end_date}')
+        AND dt between DATE('{start_date}')
+        AND DATE('{end_date}')
     """
 
     # Query for can_ac data
     can_ac_query = f"""
     SELECT 
-        id, CAST(timestamp AS TIMESTAMP) AT TIME ZONE 'Asia/Kolkata' as timestamp, date,
+        id, timestamp, date,
         b2t_tms_control_cmd, b2t_set_water_out_temp, b2t_battery_min_temp, b2t_battery_max_temp,
         tms_working_mode, tms_fault_code, ac_fault_code, coolant_out_temp, coolant_in_temp,
         comp_status,comp_target_hz as comp_target_freq,
@@ -178,8 +178,8 @@ def fetch_battery_data(start_date, end_date, vehicle_ids):
         facts_prod.can_output_ac
     WHERE
         id IN ({vehicle_ids_str})
-        AND DATE(timestamp AT TIME ZONE 'Asia/Kolkata')  >= DATE('{start_date}')
-        AND DATE(timestamp AT TIME ZONE 'Asia/Kolkata') <= DATE('{end_date}')
+        AND dt >= DATE('{start_date}')
+        AND dt <= DATE('{end_date}')
         and b2t_battery_min_temp > 0
         and b2t_battery_max_temp > 0
         and coolant_in_temp > 0
@@ -232,6 +232,10 @@ def process_battery_data(df_cpo100, df_can_ac):
     df_cpo100['ts_mins'] = df_cpo100['timestamp'].dt.floor('min')
     df_can_ac['ts_mins_cac'] = df_can_ac['timestamp'].dt.floor('min')
 
+    df_cpo100['ts_ist'] = (pd.to_datetime(df_cpo100['timestamp'], utc=True).dt.tz_convert('Asia/Kolkata'))
+    df_can_ac['ts_ist'] = (pd.to_datetime(df_can_ac['timestamp'], utc=True).dt.tz_convert('Asia/Kolkata'))
+
+
     # Add row numbers (equivalent to SQL row_number() window function)
     # For cpo100
     df_cpo100 = df_cpo100.sort_values(['id', 'ts_mins', 'timestamp'])
@@ -261,9 +265,8 @@ def process_battery_data(df_cpo100, df_can_ac):
         result_columns.append('id_cpo100')
 
     # Add other columns from cpo100
-    cpo100_cols = ['dt', 'ignitionstatus', 'vehiclereadycondition', 'gun_connection_status',
-                   'vehicle_speed_vcu','gear_position','bat_soc',
-                # pack1_cellmax_temperature, pack1_cell_min_temperature, pack1_maxtemperature_cell_number, pack1_celltemperature_cellnumber,                   
+    cpo100_cols = ['ignitionstatus', 'vehiclereadycondition', 'gun_connection_status',
+                   'vehicle_speed_vcu','gear_position','bat_soc',                
                    'pack1_cellmax_temperature', 'pack1_cell_min_temperature',
                    'pack1_maxtemperature_cell_number','pack1_celltemperature_cellnumber',
                    'bat_voltage','cellmax_voltagecellnumber','cell_max_voltage','cellminvoltagecellnumber','cell_min_voltage']
@@ -287,7 +290,7 @@ def process_battery_data(df_cpo100, df_can_ac):
         result_columns.append('ts_mins')
 
     # Add columns from can_ac
-    can_ac_cols = ['b2t_tms_control_cmd', 'b2t_set_water_out_temp', 
+    can_ac_cols = ['ts_ist_can_ac','b2t_tms_control_cmd', 'b2t_set_water_out_temp', 
                   'b2t_battery_min_temp', 'b2t_battery_max_temp', 'tms_working_mode',
                   'coolant_out_temp', 'coolant_in_temp', 'hv_voltage',
                   'comp_target_freq','comp_running_freq',
@@ -346,13 +349,25 @@ def get_all_battery_data(start_date, end_date, vehicle_ids):
     return result_df, df_cpo100_processed, df_can_ac_processed
 
 # %%
-df, df_cpo100, df_can_ac = get_all_battery_data('2025-10-01', '2025-10-02', ['6'])
+utc_start.strftime("%Y-%m-%d"),utc_end.strftime("%Y-%m-%d")
 
 # %%
+df, df_cpo100, df_can_ac = get_all_battery_data(utc_start.strftime("%Y-%m-%d"), utc_end.strftime("%Y-%m-%d"), ['6'])
+
+# %%
+df_can_ac.head()
+
+# %%
+df.head()
+
+# %%
+df = df[(df.timestamp >= utc_start) & (df.timestamp <= utc_end)].copy()
+print(df.timestamp.min(),df.timestamp.max())
+print(df.ts_ist.min(),df.ts_ist.max())
+
+# %%
+display(len(df))
 display(df.head(10))
-
-# %%
-len(df)
 
 # %%
 df_can_ac.comp_running_freq.describe()
@@ -364,12 +379,30 @@ df_can_ac.comp_running_freq.value_counts(dropna=False).sort_values()
 df_cpo100.batterycoolingstate.describe()
 
 # %%
+df_cpo100.bat_soc.isnull().sum()
+
+# %%
 # display(df_cpo100.head())
 # display(df_cpo100.lowpressureoilpumpfaultcode.value_counts())
 # display(df_cpo100.bms_fault_code.value_counts())
 # display(df_cpo100.fiveinone_faultcode.value_counts())
 
 # %%
+def safe_freq(series):
+    """Convert to numeric, drop garbage, and fill short missing runs smoothly."""
+    if series is None:
+        return None
+    s = pd.to_numeric(series, errors="coerce")
+    
+    # If everything is NaN, return as-is (don’t invent values)
+    if s.dropna().empty:
+        return s
+    
+    # Light smoothing: forward-fill then back-fill to close small gaps
+    s = s.ffill().bfill()
+    
+    return s
+
 def safe_get(df, col):
     return df[col] if col in df.columns else pd.Series(dtype=float)
 
@@ -417,6 +450,17 @@ def process_tms_transitions(df: pd.DataFrame) -> pd.DataFrame:
     # ensure first value isn't NaN to avoid false trigger at start
     if pd.isna(df.loc[0, "comp_status"]):
         df.loc[0, "comp_status"] = "Off"  # or whichever baseline makes sense
+
+    df["comp_target_freq"] = df["comp_target_freq"].ffill().replace({"nan": np.nan})
+    # ensure first value isn't NaN to avoid false trigger at start
+    if pd.isna(df.loc[0, "comp_target_freq"]):
+        df.loc[0, "comp_target_freq"] = 0  # or whichever baseline makes sense
+
+    df["comp_running_freq"] = df["comp_running_freq"].ffill().replace({"nan": np.nan})
+    # ensure first value isn't NaN to avoid false trigger at start
+    if pd.isna(df.loc[0, "comp_running_freq"]):
+        df.loc[0, "comp_running_freq"] = 0  # or whichever baseline makes sense
+
 
     # --- Clean AC fault code ---
     df["ac_fault_code"] = (df["ac_fault_code"].ffill().replace({"nan": np.nan}))
@@ -588,46 +632,6 @@ df_with_state,state_summary = process_tms_transitions(df)
 state_summary
 
 # %%
-import matplotlib.pyplot as plt
-import pandas as pd
-
-def plot_tms_session(df: pd.DataFrame, group_id: int):
-    """
-    Plot TMS temperature and voltage evolution for a given transition session (state_group).
-    Works directly with the raw dataframe produced before summarisation.
-    """
-    if "state_group" not in df.columns:
-        raise KeyError("Column 'state_group' not found. Ensure process_tms_transitions() was used on this data.")
-
-    session = df[df["state_group"] == group_id].copy()
-    if session.empty:
-        print(f"No data found for state_group {group_id}")
-        return
-
-    session = session.sort_values("timestamp")
-
-    fig, ax1 = plt.subplots(figsize=(10, 5))
-
-    ax1.plot(session["timestamp"], session["batt_mintemp"], label="Batt Min Temp", linewidth=2)
-    ax1.plot(session["timestamp"], session["batt_maxtemp"], label="Batt Max Temp", linewidth=2)
-    ax1.plot(session["timestamp"], session["coolant_in"], label="Coolant In", linestyle="--")
-    ax1.plot(session["timestamp"], session["coolant_out"], label="Coolant Out", linestyle="--")
-
-    ax1.set_xlabel("Timestamp")
-    ax1.set_ylabel("Temperature (°C)")
-    ax1.legend(loc="upper left")
-    ax1.grid(alpha=0.3)
-
-    ax2 = ax1.twinx()
-    ax2.plot(session["timestamp"], session["bat_voltage"], color="white", linestyle=":", label="Battery Voltage (V)")
-    ax2.set_ylabel("Voltage (V)")
-    ax2.legend(loc="upper right")
-
-    title_info = f"TMS Session {group_id} | Mode: {session['tms_working_mode'].iloc[0]} | Cmd: {session['b2t_tms_control_cmd'].iloc[0]}"
-    plt.title(title_info)
-    plt.tight_layout()
-    plt.show()
-
 
 def plot_session_summary(state_summary: pd.DataFrame):
     """
@@ -660,18 +664,122 @@ def plot_session_summary(state_summary: pd.DataFrame):
     plt.show()
 
 # %%
-df_with_state[df_with_state['state_group']==12].iloc[-1].timestamp
+def plot_tms_session(df: pd.DataFrame, group_id: int):
+    """
+    Plot TMS temperature and compressor frequency evolution for a given state_group.
+    Returns the figure object for PDF export.
+    """
+
+    if "state_group" not in df.columns:
+        raise KeyError("Column 'state_group' not found.")
+
+    session = df[df["state_group"] == group_id].copy()
+    if session.empty:
+        print(f"No data found for state_group {group_id}")
+        return None
+
+    # -------- Timestamp Fix --------
+    session = session.sort_values("timestamp")
+    try:
+        session["timestamp"] = session["timestamp"].dt.tz_localize(None)
+    except:
+        pass
+    session["timestamp"] = session["timestamp"].ffill().bfill()
+    required_cols = [
+        "batt_mintemp", "batt_maxtemp",
+        "coolant_in", "coolant_out",
+        "comp_target_freq", "comp_running_freq"
+    ]
+
+    # Skip if all values are null or missing
+    if session[required_cols].isna().all().all():
+        return None
+
+
+    # -------- Figure Setup --------
+    fig, ax1 = plt.subplots(figsize=(12, 6))
+
+    # -------- Temperature Plots --------
+    ax1.plot(session["timestamp"], session["batt_mintemp"], label="Batt Min Temp", linewidth=2)
+    ax1.plot(session["timestamp"], session["batt_maxtemp"], label="Batt Max Temp", linewidth=2)
+    ax1.plot(session["timestamp"], session["coolant_in"], label="Coolant In", linestyle="--")
+    ax1.plot(session["timestamp"], session["coolant_out"], label="Coolant Out", linestyle="--")
+
+    ax1.set_xlabel("Timestamp")
+    ax1.set_ylabel("Temperature (°C)")
+    ax1.grid(alpha=0.3)
+
+    # -------- Compressor Frequency Plots --------
+    ax2 = ax1.twinx()
+    ax2.plot(session["timestamp"], session["comp_target_freq"],
+             linestyle="--", color="tab:pink", label="Comp Target Freq", alpha=0.7)
+    ax2.plot(session["timestamp"], session["comp_running_freq"],
+             linestyle="-", color="tab:gray", label="Comp Running Freq", alpha=0.7)
+
+    ax2.set_ylabel("Compressor Frequency (Hz)")
+
+    # -------- Combined Legend (NO duplicate legends) --------
+    lines_1, labels_1 = ax1.get_legend_handles_labels()
+    lines_2, labels_2 = ax2.get_legend_handles_labels()
+
+    fig.legend(
+        lines_1 + lines_2,
+        labels_1 + labels_2,
+        loc="lower center",
+        bbox_to_anchor=(0.5, -0.15),
+        ncol=3,
+        frameon=True
+    )
+
+    # -------- Title --------
+    mode = session["tms_working_mode"].iloc[0]
+    cmd = session["b2t_tms_control_cmd"].iloc[0]
+    fig.suptitle(f"TMS Session {group_id} | Mode: {mode} | Cmd: {cmd}", fontsize=14)
+
+    # -------- Layout --------
+    fig.tight_layout(rect=[0, 0.05, 1, 0.95])
+    plt.close(fig)
+
+    # ✅ DO NOT call plt.show() — breaks PDF capturing
+    return fig
+
 
 # %%
 # Plot detailed single session (raw time-series)
-plot_tms_session(df_with_state, group_id=1)
+plot_tms_session(df_with_state,group_id=15)
 
 # Plot summary overview (start-end deltas)
 # plot_session_summary(state_summary)
 
 
 # %%
-wait
+def save_all_tms_sessions(df, pdf_path="tms_sessions_report.pdf"):
+    if "state_group" not in df.columns:
+        raise KeyError("'state_group' not found in dataframe.")
+
+    groups = sorted(df["state_group"].dropna().unique())
+    skipped = []
+
+    with PdfPages(pdf_path) as pdf:
+        for gid in groups:
+            fig = plot_tms_session(df, gid)
+
+            if fig is None:
+                skipped.append(gid)
+                continue
+
+            pdf.savefig(fig, bbox_inches="tight")
+            plt.close(fig)
+
+    print(f"✅ PDF generated: {pdf_path}")
+    if skipped:
+        print(f"ℹ️ Skipped sessions with no usable data: {skipped}")
+
+
+save_all_tms_sessions(df_with_state, "tms_sessions_report.pdf")
+
+# %%
+len(df_with_state)
 
 # %% [markdown]
 # 1. Compressor Duty Cycle Analysis: based on 300seconds buckets for each state_group
