@@ -261,10 +261,51 @@ def _intro_story():
     ]
 
 
+
+def build_condition_bucket_table(metric_buckets: dict):
+    """
+    Builds a single table summarizing:
+        Metric | 20–30% | 30–40% | >40%
+    """
+    DISPLAY = {
+        "20-30%": "20–30%",
+        "30-40%": "30–40%",
+        ">40%": ">40%",
+    }
+
+    data = [["Metric", "20-30%", "30-40%", ">40%"]]
+
+    for metric, cats in metric_buckets.items():
+        row = [
+            metric,
+            ", ".join(map(str, cats["20-30%"])) if cats["20-30%"] else "",
+            ", ".join(map(str, cats["30-40%"])) if cats["30-40%"] else "",
+            ", ".join(map(str, cats[">40%"])) if cats[">40%"] else "",
+        ]
+        data.append(row)
+
+    col_widths = [60 * mm, 50 * mm, 50 * mm, 50 * mm]
+
+    tbl = Table(data, colWidths=col_widths)
+    tbl.setStyle(TableStyle([
+        ("BOX", (0,0), (-1,-1), 1, colors.black),
+        ("GRID", (0,0), (-1,-1), 0.5, colors.black),
+        ("BACKGROUND", (0,0), (-1,0), colors.lightgrey),
+        ("FONTNAME", (0,0), (-1,0), "Helvetica-Bold"),
+        ("ALIGN", (0,0), (-1,-1), "CENTER"),
+        ("VALIGN", (0,0), (-1,-1), "MIDDLE"),
+        ("FONTSIZE", (0,0), (-1,-1), 9),
+    ]))
+
+    return tbl
+
+
+
 def export_battery_condition_pdf(
     vehicle_results: dict,
     fleet_mode_summary: dict,
     fleet_overall_summary: dict,
+    charging_metric_buckets: dict,
     output_pdf: str = "battery_condition_fleet_report_30days.pdf",
 ):
     """
@@ -340,6 +381,15 @@ def export_battery_condition_pdf(
     story.append(PageBreak())
 
     styles = getSampleStyleSheet()
+    # ==== NEW PAGE: CHARGING CONDITION BUCKETS ====
+    story.append(Paragraph("<b>Fleet Charging Stress Conditions</b>", styles["Heading2"]))
+    story.append(Spacer(1, 6 * mm))
+
+    tbl = build_condition_bucket_table(charging_metric_buckets)
+    story.append(tbl)
+
+    story.append(PageBreak())
+
     story.append(Paragraph("<b>Fleet-Level Battery Condition Summary</b>", styles["Heading2"]))
     story.append(Spacer(1, 6 * mm))
 
@@ -444,6 +494,69 @@ def export_battery_condition_pdf(
     logging.info(f"📄 Battery condition PDF saved → {output_pdf}")
 
 
+def compute_charging_condition_buckets(df: pd.DataFrame):
+    """
+    Computes vehicle-wise % of CHARGING time spent in:
+        1. batt_maxtemp > 35°C
+        2. (batt_maxtemp - batt_mintemp) > 5°C
+        3. (batt_maxvolt - batt_minvolt) > 0.020 V  (20 mV)
+
+    Returns a dict:
+        {
+            "max temp>35 degrees": {"20-30%": [...], "30-40%": [...], ">40%": [...]},
+            "DeltaT > 5 deg": {...},
+            "DeltaV > 20 mV": {...}
+        }
+    """
+
+    if df is None or df.empty:
+        return {}
+
+    df = df.copy()
+    df = df[df["mode"] == "CHARGING"].copy()
+    if df.empty:
+        return {}
+
+    # No duration column in Stage-2 → assume each row = equal sampling interval
+    # So % = (#rows matching condition) / (#rows total) * 100
+    total_counts = df.groupby("id").size().to_dict()
+
+    # Conditions
+    df["cond_maxtemp"] = df["batt_maxtemp"] > 35
+    df["cond_deltaT"] = (df["batt_maxtemp"] - df["batt_mintemp"]) > 5
+    df["cond_deltaV"] = (df["batt_maxvolt"] - df["batt_minvolt"]) > 0.020
+
+    conditions = {
+        "max temp>35 degrees": "cond_maxtemp",
+        "DeltaT > 5 deg": "cond_deltaT",
+        "DeltaV > 20 mV": "cond_deltaV",
+    }
+
+    results = {}
+
+    for label, cond in conditions.items():
+        pct_per_vehicle = {}
+
+        # Count where condition is True
+        cond_counts = df[df[cond]].groupby("id").size().to_dict()
+
+        for vid, tot in total_counts.items():
+            match = cond_counts.get(vid, 0)
+            pct = (match / tot) * 100 if tot > 0 else 0
+            pct_per_vehicle[vid] = pct
+
+        # Bucketize
+        buckets = {
+            "20-30%": [vid for vid, p in pct_per_vehicle.items() if 20 <= p < 30],
+            "30-40%": [vid for vid, p in pct_per_vehicle.items() if 30 <= p < 40],
+            ">40%":   [vid for vid, p in pct_per_vehicle.items() if p >= 40],
+        }
+
+        results[label] = buckets
+
+    return results
+
+
 def run_stage_2(
     feather_path: str,
     per_vehicle_pdf: str | None = None,
@@ -478,6 +591,7 @@ def run_stage_2(
             raise ValueError(f"Column '{c}' missing from {feather_path}")
 
     df_cond = pd.read_feather(feather_path, columns=cols_needed)
+    charging_condition_buckets = compute_charging_condition_buckets(df_cond)
 
     logging.info(f"Stage 2: loaded df_cond with {len(df_cond):,} rows.")
 
@@ -494,11 +608,13 @@ def run_stage_2(
 
     # Step 3 — final consolidated landscape PDF
     export_battery_condition_pdf(
-        vehicle_results=vehicle_results,
-        fleet_mode_summary=fleet_mode,
-        fleet_overall_summary=fleet_overall,
-        output_pdf=fleet_pdf,
+            vehicle_results=vehicle_results,
+            fleet_mode_summary=fleet_mode,
+            fleet_overall_summary=fleet_overall,
+            charging_metric_buckets=charging_condition_buckets,
+            output_pdf=fleet_pdf,
     )
+
 
     del df_cond
     del vehicle_results
