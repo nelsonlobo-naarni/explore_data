@@ -1,0 +1,1190 @@
+
+
+
+ SG_ Airpumptemperature :[-40|215]
+ SG_ BMScontactorclosedstate :[0|1]
+ SG_ Batterylowtemperaturealarm :[0|3]
+ SG_ Vehicle_Speed :[0|150]
+ SG_ Battery_Mallfunction_Alarm :[0|3]
+ SG_ MCU_Enable_Command :[0|3]
+
+
+ SG_ VIN_digit_17 :[0|255]
+
+
+ SG_ VIN_digit_16 :[0|255]
+ SG_ VIN_digit_15 :[0|255]
+ SG_ VIN_digit_14 :[0|255]
+ SG_ VIN_digit_13 :[0|255]
+ SG_ VIN_digit_12 :[0|255]
+ SG_ VIN_digit_11 :[0|255]
+ SG_ VIN_digit_10 :[0|255]
+ SG_ VIN_digit_9 :[0|255]
+
+
+ SG_ VIN_digit_8 :[0|255]
+ SG_ VIN_digit_7 :[0|255]
+ SG_ VIN_digit_6 :[0|255]
+ SG_ VIN_digit_5 :[0|255]
+ SG_ VIN_digit_4 :[0|255]
+ SG_ VIN_digit_3 :[0|255]
+ SG_ VIN_digit_2 :[0|255]
+ SG_ VIN_digit_1 :[0|255]
+
+
+ SG_ LIFT_LOWER_NORMAL_REQUEST :[0|255]
+ SG_ kneeling_request :[0|2]
+
+
+ SG_ CHARGING_CONTACTOR_3_POSITIVE :[0|1]
+ SG_ CHARGING_CONTACTOR_3_NEGATIVE :[0|1]
+ SG_ SOH :[0|102]
+
+
+ SG_ ChrargeCurrent_Request :[-3200|3353.5]
+ SG_ EVCC_ERROR :[0|255]
+ SG_ ChargingError_BMS :[0|255]
+ SG_ Charger_Voltage :[0|65535]
+ SG_ Charger_Current :[0|0]
+
+
+ SG_ LowvoltageDCACLifesignal :[0|255]
+ SG_ Lowpressureoilpumpfaultcode :[0|255]
+
+
+ SG_ BatteryCoolantTemperature :[-40|215]
+ SG_ Batterycoolingstate :[0|15]
+
+
+ SG_ OdoMeterReading :[0|0]
+
+ SG_ EBSRedWarningSignal :[0|3]
+ SG_ BrakePedalPos :[0|100]
+ SG_ ABS_EBSAmberWarningSignal :[0|6]
+
+ SG_ LIFEsignalofinsulation :[0|255]
+ SG_ Insulation_Status :[0|3]
+ SG_ Insulation__Value :[0|60000]
+
+ SG_ Output_Phase_Voltage :[0|1000]
+ SG_ Output_Phase_Currant :[0|1000]
+
+ SG_ Motor_Torque :[-2000|5000]
+ SG_ Motor_RPM :[0|5000]
+
+ SG_ MCUself_teststatus :[0|3]
+ SG_ Motor_Temperature :[-40|215]
+ SG_ IGBT_Temperature :[-40|215]
+
+ SG_ IgnitionStatus :[0|1]
+ SG_ Parking_Brake_Status :[0|1]
+ SG_ Side_Door_Panel_Open_Alarm :[0|3]
+ SG_ Rear_Air_Pressure :[0|1275]
+ SG_ Front_Air_Pressure :[0|1275]
+ SG_ BrakingSystemMallfunction_Alarm :[0|3]
+ SG_ Brake_Pad_Worn_out_Alarm :[0|15]
+
+BO_ 2566001907 GUN_Temperature: 8 Vector__XXX
+ SG_ GUNC_DCP_Temperature :[-40|215]
+ SG_ GUNC_DCM_Temperature :[-40|215]
+ SG_ GUNB_DCP_Temperature :[-40|215]
+ SG_ GUNB_DCM_Temperature :[-40|215]
+ SG_ GUNA_DCP_Temperature :[-40|215]
+ SG_ GUNA_DCM_Temperature :[-40|215]
+
+ SG_ Hightempalarmofcharginggun :[0|3]
+ SG_ SOChighalarm :[0|3]
+ SG_ SOClowalarm :[0|255]
+ SG_ Temperaturedifferencealarm :[0|3]
+ SG_ Singlevoltagedifferencealarm :[0|3]
+ SG_ Chargingcurrentalarm :[0|3]
+ SG_ Dischargecurrentalarm :[0|3]
+ SG_ Monomerundervoltagealarm :[0|3]
+ SG_ Batterypackundervoltagealarm :[0|3]
+ SG_ Batterypackovervoltagealarm :[0|3]
+ SG_ Monomerovervoltagealarm :[0|3]
+ SG_ Polehightemperaturealarm :[0|3]
+ SG_ Batteryhightemperaturealarm :[0|0]
+ SG_ GUN_Connection_Status :[0|1]
+ SG_ BMS_Fault_Code :[0|255]
+
+ SG_ Chargingcontactor2positive :[0|1]
+ SG_ Chargingcontactor2negative :[0|1]
+ SG_ Chargingcontactor1positive :[0|1]
+ SG_ Chargingcontactor1negative :[0|1]
+ SG_ Batterytotalnegativecontactor :[0|1]
+ SG_ Maxavailableshorttimedischarge :[0|1275]
+ SG_ Maxavailableshorttermcharging :[-1000|0]
+ SG_ Pack_Negative_Contactors_status :[0|1]
+
+ SG_ BMSlifesignal :[0|255]
+ SG_ Total_Battery_Current :[-3200|3200]
+ SG_ Bat_Voltage :[0|1000]
+ SG_ BAT_SOC :[0|100]
+
+ SG_ Steering_Pump_Enable_Command :[0|1]
+ SG_ DCDC_Enable_Command :[0|1]
+ SG_ Air_Compressor_Enable_Command :[0|1]
+
+ SG_ VCUversionInformation :[2|4.55]
+ SG_ DistancetoEmpty :[0|2000]
+ SG_ Brake_pedal :[0|102]
+ SG_ AccelarationPedal :[0|100]
+
+ SG_ vehicle_operation_mode :[0|7]
+ SG_ AUTOHOLDUnenable :[0|1]
+ SG_ VehiclecontrollerLIFE :[0|255]
+ SG_ VCUself_teststatus :[0|3]
+ SG_ Systeminterlockstate :[0|3]
+ SG_ Vehiclereadycondition :[0|3]
+ SG_ Vehicle_speed_VCU :[0|250]
+ SG_ VCU_Fault_Code :[0|255]
+ SG_ Powertrain_Failure_Alarm :[0|1]
+ SG_ Gear_Position :[0|255]
+
+BO_ 2558466035 Pack_cellVoltage: 8 Vector__XXX
+ SG_ Pack1_cellMinVoltageCellNumber :[0|600]
+ SG_ Pack1_cellMax_VoltageCellNumber :[0|600]
+ SG_ Pack1_cell_Min_Voltage :[0|10]
+ SG_ Pack1_cell_Max_Voltage :[0|10]
+
+BO_ 2556368883 Pack_Temperature: 8 Vector__XXX
+ SG_ Pack1_MaxTemperature_Cell_Number :[0|255]
+ SG_ Pack1_cellTemperature_CellNumber :[0|255]
+ SG_ Pack1_cellMax_Temperature :[-40|215]
+ SG_ Pack1_cell_Min_Temperature :[-40|215]
+
+ SG_ fourinonelifesignal :[0|255]
+ SG_ fourinoneself_teststatus :[0|3]
+ SG_ fiveinone_faultcode :[0|0]
+ SG_ Prechargedcontactorstate :[0|1]
+ SG_ Mainmotorcontactor1state :[0|1]
+ SG_ Accessorycontactorstatus :[0|1]
+ SG_ Pre_Charge_status :[0|1]
+
+ SG_ AirpumpDCACLifesignal :[0|255]
+ SG_ Airpumpcondition :[0|3]
+ SG_ Air_Compreesor_Temperature :[-40|215]
+
+ SG_ DCDCbusvoltage :[0|1000]
+ SG_ DCDCLifesignal :[0|255]
+ SG_ DCDC_Out_Put_Volatge :[0|36]
+ SG_ DCDC_Out_Put_Currant :[0|125]
+ SG_ DCDC_statusandfailure :[0|3]
+
+ SG_ Oilpumpcondition :[0|3]
+ SG_ SteeringController_failureAlarm :[0|255]
+ SG_ Steering_Pump_RPM :[0|5000]
+
+BO_ 2556434419 Pack_Temperature1: 8 Vector__XXX
+ SG_ Pack_Temperature1 :[-40|215]
+ SG_ Pack_Temperature2 :[-40|215]
+ SG_ Pack_Temperature3 :[-40|215]
+ SG_ Pack_Temperature4 :[-40|215]
+ SG_ Pack_Temperature5 :[-40|215]
+ SG_ Pack_Temperature6 :[-40|215]
+ SG_ Pack_Temperature7 :[-40|215]
+ SG_ Pack_Temperature8 :[-40|215]
+
+BO_ 2556499955 Pack_Temperature2: 8 Vector__XXX
+ SG_ Pack_Temperature9 :[-40|215]
+ SG_ Pack_Temperature10 :[-40|215]
+ SG_ Pack_Temperature11 :[-40|215]
+ SG_ Pack_Temperature12 :[-40|215]
+ SG_ Pack_Temperature13 :[-40|215]
+ SG_ Pack_Temperature14 :[-40|215]
+ SG_ Pack_Temperature15 :[-40|215]
+ SG_ Pack_Temperature16 :[-40|215]
+
+BO_ 2556565491 Pack_Temperature3: 8 Vector__XXX
+ SG_ Pack_Temperature17 :[-40|215]
+ SG_ Pack_Temperature18 :[-40|215]
+ SG_ Pack_Temperature19 :[-40|215]
+ SG_ Pack_Temperature20 :[-40|215]
+ SG_ Pack_Temperature21 :[-40|215]
+ SG_ Pack_Temperature22 :[-40|215]
+ SG_ Pack_Temperature23 :[-40|215]
+ SG_ Pack_Temperature24 :[-40|215]
+
+BO_ 2556631027 Pack_Temperature4: 8 Vector__XXX
+ SG_ Pack_Temperature25 :[-40|215]
+ SG_ Pack_Temperature26 :[-40|215]
+ SG_ Pack_Temperature27 :[-40|215]
+ SG_ Pack_Temperature28 :[-40|215]
+ SG_ Pack_Temperature29 :[-40|215]
+ SG_ Pack_Temperature30 :[-40|215]
+ SG_ Pack_Temperature31 :[-40|215]
+ SG_ Pack_Temperature32 :[-40|215]
+
+BO_ 2556696563 Pack_Temperature5: 8 Vector__XXX
+ SG_ Pack_Temperature33 :[-40|215]
+ SG_ Pack_Temperature34 :[-40|215]
+ SG_ Pack_Temperature35 :[-40|215]
+ SG_ Pack_Temperature36 :[-40|215]
+ SG_ Pack_Temperature37 :[-40|215]
+ SG_ Pack_Temperature38 :[-40|215]
+ SG_ Pack_Temperature39 :[-40|215]
+ SG_ Pack_Temperature40 :[-40|215]
+
+BO_ 2556762099 Pack_Temperature6: 8 Vector__XXX
+ SG_ Pack_Temperature41 :[-40|215]
+ SG_ Pack_Temperature42 :[-40|215]
+ SG_ Pack_Temperature43 :[-40|215]
+ SG_ Pack_Temperature44 :[-40|215]
+ SG_ Pack_Temperature45 :[-40|215]
+ SG_ Pack_Temperature46 :[-40|215]
+ SG_ Pack_Temperature47 :[-40|215]
+ SG_ Pack_Temperature48 :[-40|215]
+
+BO_ 2556827635 Pack_Temperature7: 8 Vector__XXX
+ SG_ Pack_Temperature49 :[-40|215]
+ SG_ Pack_Temperature50 :[-40|215]
+ SG_ Pack_Temperature51 :[-40|215]
+ SG_ Pack_Temperature52 :[-40|215]
+ SG_ Pack_Temperature53 :[-40|215]
+ SG_ Pack_Temperature54 :[-40|215]
+ SG_ Pack_Temperature55 :[-40|215]
+ SG_ Pack_Temperature56 :[-40|215]
+
+BO_ 2556893171 Pack_Temperature8: 8 Vector__XXX
+ SG_ Pack_Temperature57 :[-40|215]
+ SG_ Pack_Temperature58 :[-40|215]
+ SG_ Pack_Temperature59 :[-40|215]
+ SG_ Pack_Temperature60 :[-40|215]
+ SG_ Pack_Temperature61 :[-40|215]
+ SG_ Pack_Temperature62 :[-40|215]
+ SG_ Pack_Temperature63 :[-40|215]
+ SG_ Pack_Temperature64 :[-40|215]
+
+BO_ 2556958707 Pack_Temperature9: 8 Vector__XXX
+ SG_ Pack_Temperature65 :[-40|215]
+ SG_ Pack_Temperature66 :[-40|215]
+ SG_ Pack_Temperature67 :[-40|215]
+ SG_ Pack_Temperature68 :[-40|215]
+ SG_ Pack_Temperature69 :[-40|215]
+ SG_ Pack_Temperature70 :[-40|215]
+ SG_ Pack_Temperature71 :[-40|215]
+ SG_ Pack_Temperature72 :[-40|215]
+
+BO_ 2557024243 Pack_Temperature10: 8 Vector__XXX
+ SG_ Pack_Temperature73 :[-40|215]
+ SG_ Pack_Temperature74 :[-40|215]
+ SG_ Pack_Temperature75 :[-40|215]
+ SG_ Pack_Temperature76 :[-40|215]
+ SG_ Pack_Temperature77 :[-40|215]
+ SG_ Pack_Temperature78 :[-40|215]
+ SG_ Pack_Temperature79 :[-40|215]
+ SG_ Pack_Temperature80 :[-40|215]
+
+BO_ 2557482995 Pack_Temperature10: 8 Vector__XXX
+ SG_ Pack_Temperature81 :[-40|215]
+ SG_ Pack_Temperature82 :[-40|215]
+ SG_ Pack_Temperature83 :[-40|215]
+ SG_ Pack_Temperature84 :[-40|215]
+ SG_ Pack_Temperature85 :[-40|215]
+ SG_ Pack_Temperature86 :[-40|215]
+ SG_ Pack_Temperature87 :[-40|215]
+ SG_ Pack_Temperature88 :[-40|215]
+
+BO_ 2557548531 Pack_Temperature10: 8 Vector__XXX
+ SG_ Pack_Temperature89 :[-40|215]
+ SG_ Pack_Temperature90 :[-40|215]
+ SG_ Pack_Temperature91 :[-40|215]
+ SG_ Pack_Temperature92 :[-40|215]
+ SG_ Pack_Temperature93 :[-40|215]
+ SG_ Pack_Temperature94 :[-40|215]
+ SG_ Pack_Temperature95 :[-40|215]
+ SG_ Pack_Temperature96 :[-40|215]
+
+BO_ 2557614067 Pack_Temperature10: 8 Vector__XXX
+ SG_ Pack_Temperature97 :[-40|215]
+ SG_ Pack_Temperature98 :[-40|215]
+ SG_ Pack_Temperature99 :[-40|215]
+ SG_ Pack_Temperature100 :[-40|215]
+ SG_ Pack_Temperature101 :[-40|215]
+ SG_ Pack_Temperature102 :[-40|215]
+ SG_ Pack_Temperature103 :[-40|215]
+ SG_ Pack_Temperature104 :[-40|215]
+
+BO_ 2557679603 Pack_Temperature10: 8 Vector__XXX
+ SG_ Pack_Temperature105 :[-40|215]
+ SG_ Pack_Temperature106 :[-40|215]
+ SG_ Pack_Temperature107 :[-40|215]
+ SG_ Pack_Temperature108 :[-40|215]
+
+BO_ 2558531571 Pack_cellVoltage_1: 8 Vector__XXX
+ SG_ Pack_cellVoltage_1 :[0|600]
+ SG_ Pack_cellVoltage_2 :[0|600]
+ SG_ Pack_cellVoltage_3 :[0|600]
+ SG_ Pack_cellVoltage_4 :[0|600]
+
+BO_ 2558597107 Pack_cellVoltage_2: 8 Vector__XXX
+ SG_ Pack_cellVoltage_5 :[0|600]
+ SG_ Pack_cellVoltage_6 :[0|600]
+ SG_ Pack_cellVoltage_7 :[0|600]
+ SG_ Pack_cellVoltage_8 :[0|600]
+
+BO_ 2558662643 Pack_cellVoltage_3: 8 Vector__XXX
+ SG_ Pack_cellVoltage_9 :[0|600]
+ SG_ Pack_cellVoltage_10 :[0|600]
+ SG_ Pack_cellVoltage_11 :[0|600]
+ SG_ Pack_cellVoltage_12 :[0|600]
+
+BO_ 2558728179 Pack_cellVoltage_4: 8 Vector__XXX
+ SG_ Pack_cellVoltage_13 :[0|600]
+ SG_ Pack_cellVoltage_14 :[0|600]
+ SG_ Pack_cellVoltage_15 :[0|600]
+ SG_ Pack_cellVoltage_16 :[0|600]
+
+BO_ 2558793715 Pack_cellVoltage_5: 8 Vector__XXX
+ SG_ Pack_cellVoltage_17 :[0|600]
+ SG_ Pack_cellVoltage_18 :[0|600]
+ SG_ Pack_cellVoltage_19 :[0|600]
+ SG_ Pack_cellVoltage_20 :[0|600]
+
+BO_ 2558859251 Pack_cellVoltage_6: 8 Vector__XXX
+ SG_ Pack_cellVoltage_21 :[0|600]
+ SG_ Pack_cellVoltage_22 :[0|600]
+ SG_ Pack_cellVoltage_23 :[0|600]
+ SG_ Pack_cellVoltage_24 :[0|600]
+
+BO_ 2558924787 Pack_cellVoltage_7: 8 Vector__XXX
+ SG_ Pack_cellVoltage_25 :[0|600]
+ SG_ Pack_cellVoltage_26 :[0|600]
+ SG_ Pack_cellVoltage_27 :[0|600]
+ SG_ Pack_cellVoltage_28 :[0|600]
+
+BO_ 2558990323 Pack_cellVoltage_8: 8 Vector__XXX
+ SG_ Pack_cellVoltage_29 :[0|600]
+ SG_ Pack_cellVoltage_30 :[0|600]
+ SG_ Pack_cellVoltage_31 :[0|600]
+ SG_ Pack_cellVoltage_32 :[0|600]
+
+BO_ 2559055859 Pack_cellVoltage_9: 8 Vector__XXX
+ SG_ Pack_cellVoltage_33 :[0|600]
+ SG_ Pack_cellVoltage_34 :[0|600]
+ SG_ Pack_cellVoltage_35 :[0|600]
+ SG_ Pack_cellVoltage_36 :[0|600]
+
+BO_ 2559121395 Pack_cellVoltage_10: 8 Vector__XXX
+ SG_ Pack_cellVoltage_37 :[0|600]
+ SG_ Pack_cellVoltage_38 :[0|600]
+ SG_ Pack_cellVoltage_39 :[0|600]
+ SG_ Pack_cellVoltage_40 :[0|600]
+
+BO_ 2559186931 Pack_cellVoltage_11: 8 Vector__XXX
+ SG_ Pack_cellVoltage_41 :[0|600]
+ SG_ Pack_cellVoltage_42 :[0|600]
+ SG_ Pack_cellVoltage_43 :[0|600]
+ SG_ Pack_cellVoltage_44 :[0|600]
+
+BO_ 2559252467 Pack_cellVoltage_12: 8 Vector__XXX
+ SG_ Pack_cellVoltage_45 :[0|600]
+ SG_ Pack_cellVoltage_46 :[0|600]
+ SG_ Pack_cellVoltage_47 :[0|600]
+ SG_ Pack_cellVoltage_48 :[0|600]
+
+BO_ 2559318003 Pack_cellVoltage_13: 8 Vector__XXX
+ SG_ Pack_cellVoltage_49 :[0|600]
+ SG_ Pack_cellVoltage_50 :[0|600]
+ SG_ Pack_cellVoltage_51 :[0|600]
+ SG_ Pack_cellVoltage_52 :[0|600]
+
+BO_ 2559383539 Pack_cellVoltage_14: 8 Vector__XXX
+ SG_ Pack_cellVoltage_53 :[0|600]
+ SG_ Pack_cellVoltage_54 :[0|600]
+ SG_ Pack_cellVoltage_55 :[0|600]
+ SG_ Pack_cellVoltage_56 :[0|600]
+
+BO_ 2559449075 Pack_cellVoltage_15: 8 Vector__XXX
+ SG_ Pack_cellVoltage_57 :[0|600]
+ SG_ Pack_cellVoltage_58 :[0|600]
+ SG_ Pack_cellVoltage_59 :[0|600]
+ SG_ Pack_cellVoltage_60 :[0|600]
+
+BO_ 2559514611 Pack_cellVoltage_16: 8 Vector__XXX
+ SG_ Pack_cellVoltage_61 :[0|600]
+ SG_ Pack_cellVoltage_62 :[0|600]
+ SG_ Pack_cellVoltage_63 :[0|600]
+ SG_ Pack_cellVoltage_64 :[0|600]
+
+BO_ 2559580147 Pack_cellVoltage_17: 8 Vector__XXX
+ SG_ Pack_cellVoltage_65 :[0|600]
+ SG_ Pack_cellVoltage_66 :[0|600]
+ SG_ Pack_cellVoltage_67 :[0|600]
+ SG_ Pack_cellVoltage_68 :[0|600]
+
+BO_ 2559645683 Pack_cellVoltage_18: 8 Vector__XXX
+ SG_ Pack_cellVoltage_69 :[0|600]
+ SG_ Pack_cellVoltage_70 :[0|600]
+ SG_ Pack_cellVoltage_71 :[0|600]
+ SG_ Pack_cellVoltage_72 :[0|600]
+
+BO_ 2559711219 Pack_cellVoltage_19: 8 Vector__XXX
+ SG_ Pack_cellVoltage_73 :[0|600]
+ SG_ Pack_cellVoltage_74 :[0|600]
+ SG_ Pack_cellVoltage_75 :[0|600]
+ SG_ Pack_cellVoltage_76 :[0|600]
+
+BO_ 2559776755 Pack_cellVoltage_20: 8 Vector__XXX
+ SG_ Pack_cellVoltage_77 :[0|600]
+ SG_ Pack_cellVoltage_78 :[0|600]
+ SG_ Pack_cellVoltage_79 :[0|600]
+ SG_ Pack_cellVoltage_80 :[0|600]
+
+BO_ 2559842291 Pack_cellVoltage_21: 8 Vector__XXX
+ SG_ Pack_cellVoltage_81 :[0|600]
+ SG_ Pack_cellVoltage_82 :[0|600]
+ SG_ Pack_cellVoltage_83 :[0|600]
+ SG_ Pack_cellVoltage_84 :[0|600]
+
+BO_ 2559907827 Pack_cellVoltage_22: 8 Vector__XXX
+ SG_ Pack_cellVoltage_85 :[0|600]
+ SG_ Pack_cellVoltage_86 :[0|600]
+ SG_ Pack_cellVoltage_87 :[0|600]
+ SG_ Pack_cellVoltage_88 :[0|600]
+
+BO_ 2559973363 Pack_cellVoltage_23: 8 Vector__XXX
+ SG_ Pack_cellVoltage_89 :[0|600]
+ SG_ Pack_cellVoltage_90 :[0|600]
+ SG_ Pack_cellVoltage_91 :[0|600]
+ SG_ Pack_cellVoltage_92 :[0|600]
+
+BO_ 2560038899 Pack_cellVoltage_24: 8 Vector__XXX
+ SG_ Pack_cellVoltage_93 :[0|600]
+ SG_ Pack_cellVoltage_94 :[0|600]
+ SG_ Pack_cellVoltage_95 :[0|600]
+ SG_ Pack_cellVoltage_96 :[0|600]
+
+BO_ 2560104435 Pack_cellVoltage_25: 8 Vector__XXX
+ SG_ Pack_cellVoltage_97 :[0|600]
+ SG_ Pack_cellVoltage_98 :[0|600]
+ SG_ Pack_cellVoltage_99 :[0|600]
+ SG_ Pack_cellVoltage_100 :[0|600]
+
+BO_ 2560169971 Pack_cellVoltage_26: 8 Vector__XXX
+ SG_ Pack_cellVoltage_101 :[0|600]
+ SG_ Pack_cellVoltage_102 :[0|600]
+ SG_ Pack_cellVoltage_103 :[0|600]
+ SG_ Pack_cellVoltage_104 :[0|600]
+
+BO_ 2560235507 Pack_cellVoltage_27: 8 Vector__XXX
+ SG_ Pack_cellVoltage_105 :[0|600]
+ SG_ Pack_cellVoltage_106 :[0|600]
+ SG_ Pack_cellVoltage_107 :[0|600]
+ SG_ Pack_cellVoltage_108 :[0|600]
+
+BO_ 2560301043 Pack_cellVoltage_28: 8 Vector__XXX
+ SG_ Pack_cellVoltage_109 :[0|600]
+ SG_ Pack_cellVoltage_110 :[0|600]
+ SG_ Pack_cellVoltage_111 :[0|600]
+ SG_ Pack_cellVoltage_112 :[0|600]
+
+BO_ 2560366579 Pack_cellVoltage_29: 8 Vector__XXX
+ SG_ Pack_cellVoltage_113 :[0|600]
+ SG_ Pack_cellVoltage_114 :[0|600]
+ SG_ Pack_cellVoltage_115 :[0|600]
+ SG_ Pack_cellVoltage_116 :[0|600]
+
+BO_ 2560432115 Pack_cellVoltage_30: 8 Vector__XXX
+ SG_ Pack_cellVoltage_117 :[0|600]
+ SG_ Pack_cellVoltage_118 :[0|600]
+ SG_ Pack_cellVoltage_119 :[0|600]
+ SG_ Pack_cellVoltage_120 :[0|600]
+
+BO_ 2560497651 Pack_cellVoltage_31: 8 Vector__XXX
+ SG_ Pack_cellVoltage_121 :[0|600]
+ SG_ Pack_cellVoltage_122 :[0|600]
+ SG_ Pack_cellVoltage_123 :[0|600]
+ SG_ Pack_cellVoltage_124 :[0|600]
+
+BO_ 2560563187 Pack_cellVoltage_32: 8 Vector__XXX
+ SG_ Pack_cellVoltage_125 :[0|600]
+ SG_ Pack_cellVoltage_126 :[0|600]
+ SG_ Pack_cellVoltage_127 :[0|600]
+ SG_ Pack_cellVoltage_128 :[0|600]
+
+BO_ 2560628723 Pack_cellVoltage_33: 8 Vector__XXX
+ SG_ Pack_cellVoltage_129 :[0|600]
+ SG_ Pack_cellVoltage_130 :[0|600]
+ SG_ Pack_cellVoltage_131 :[0|600]
+ SG_ Pack_cellVoltage_132 :[0|600]
+
+BO_ 2560694259 Pack_cellVoltage_34: 8 Vector__XXX
+ SG_ Pack_cellVoltage_133 :[0|600]
+ SG_ Pack_cellVoltage_134 :[0|600]
+ SG_ Pack_cellVoltage_135 :[0|600]
+ SG_ Pack_cellVoltage_136 :[0|600]
+
+BO_ 2560759795 Pack_cellVoltage_35: 8 Vector__XXX
+ SG_ Pack_cellVoltage_137 :[0|600]
+ SG_ Pack_cellVoltage_138 :[0|600]
+ SG_ Pack_cellVoltage_139 :[0|600]
+ SG_ Pack_cellVoltage_140 :[0|600]
+
+BO_ 2560825331 Pack_cellVoltage_36: 8 Vector__XXX
+ SG_ Pack_cellVoltage_141 :[0|600]
+ SG_ Pack_cellVoltage_142 :[0|600]
+ SG_ Pack_cellVoltage_143 :[0|600]
+ SG_ Pack_cellVoltage_144 :[0|600]
+
+BO_ 2560890867 Pack_cellVoltage_37: 8 Vector__XXX
+ SG_ Pack_cellVoltage_145 :[0|600]
+ SG_ Pack_cellVoltage_146 :[0|600]
+ SG_ Pack_cellVoltage_147 :[0|600]
+ SG_ Pack_cellVoltage_148 :[0|600]
+
+BO_ 2560956403 Pack_cellVoltage_38: 8 Vector__XXX
+ SG_ Pack_cellVoltage_149 :[0|600]
+ SG_ Pack_cellVoltage_150 :[0|600]
+ SG_ Pack_cellVoltage_151 :[0|600]
+ SG_ Pack_cellVoltage_152 :[0|600]
+
+BO_ 2561021939 Pack_cellVoltage_39: 8 Vector__XXX
+ SG_ Pack_cellVoltage_153 :[0|600]
+ SG_ Pack_cellVoltage_154 :[0|600]
+ SG_ Pack_cellVoltage_155 :[0|600]
+ SG_ Pack_cellVoltage_156 :[0|600]
+
+BO_ 2561087475 Pack_cellVoltage_40: 8 Vector__XXX
+ SG_ Pack_cellVoltage_157 :[0|600]
+ SG_ Pack_cellVoltage_158 :[0|600]
+ SG_ Pack_cellVoltage_159 :[0|600]
+ SG_ Pack_cellVoltage_160 :[0|600]
+
+BO_ 2561153011 Pack_cellVoltage_41: 8 Vector__XXX
+ SG_ Pack_cellVoltage_161 :[0|600]
+ SG_ Pack_cellVoltage_162 :[0|600]
+ SG_ Pack_cellVoltage_163 :[0|600]
+ SG_ Pack_cellVoltage_164 :[0|600]
+
+BO_ 2561218547 Pack_cellVoltage_42: 8 Vector__XXX
+ SG_ Pack_cellVoltage_165 :[0|600]
+ SG_ Pack_cellVoltage_166 :[0|600]
+ SG_ Pack_cellVoltage_167 :[0|600]
+ SG_ Pack_cellVoltage_168 :[0|600]
+
+BO_ 2561284083 Pack_cellVoltage_43: 8 Vector__XXX
+ SG_ Pack_cellVoltage_169 :[0|600]
+ SG_ Pack_cellVoltage_170 :[0|600]
+ SG_ Pack_cellVoltage_171 :[0|600]
+ SG_ Pack_cellVoltage_172 :[0|600]
+
+BO_ 2561349619 Pack_cellVoltage_44: 8 Vector__XXX
+ SG_ Pack_cellVoltage_173 :[0|600]
+ SG_ Pack_cellVoltage_174 :[0|600]
+ SG_ Pack_cellVoltage_175 :[0|600]
+ SG_ Pack_cellVoltage_176 :[0|600]
+
+BO_ 2561415155 Pack_cellVoltage_45: 8 Vector__XXX
+ SG_ Pack_cellVoltage_177 :[0|600]
+ SG_ Pack_cellVoltage_178 :[0|600]
+ SG_ Pack_cellVoltage_179 :[0|600]
+ SG_ Pack_cellVoltage_180 :[0|600]
+
+BO_ 2561480691 Pack_cellVoltage_46: 8 Vector__XXX
+ SG_ Pack_cellVoltage_181 :[0|600]
+ SG_ Pack_cellVoltage_182 :[0|600]
+ SG_ Pack_cellVoltage_183 :[0|600]
+ SG_ Pack_cellVoltage_184 :[0|600]
+
+BO_ 2561546227 Pack_cellVoltage_47: 8 Vector__XXX
+ SG_ Pack_cellVoltage_185 :[0|600]
+ SG_ Pack_cellVoltage_186 :[0|600]
+ SG_ Pack_cellVoltage_187 :[0|600]
+ SG_ Pack_cellVoltage_188 :[0|600]
+
+BO_ 2561611763 Pack_cellVoltage_48: 8 Vector__XXX
+ SG_ Pack_cellVoltage_189 :[0|600]
+ SG_ Pack_cellVoltage_190 :[0|600]
+ SG_ Pack_cellVoltage_191 :[0|600]
+ SG_ Pack_cellVoltage_192 :[0|600]
+
+BO_ 2561677299 Pack_cellVoltage_49: 8 Vector__XXX
+ SG_ Pack_cellVoltage_193 :[0|600]
+ SG_ Pack_cellVoltage_194 :[0|600]
+ SG_ Pack_cellVoltage_195 :[0|600]
+ SG_ Pack_cellVoltage_196 :[0|600]
+
+BO_ 2561742835 Pack_cellVoltage_50: 8 Vector__XXX
+ SG_ Pack_cellVoltage_197 :[0|600]
+ SG_ Pack_cellVoltage_198 :[0|600]
+ SG_ Pack_cellVoltage_199 :[0|600]
+ SG_ Pack_cellVoltage_200 :[0|600]
+
+BO_ 2561808371 Pack_cellVoltage_51: 8 Vector__XXX
+ SG_ Pack_cellVoltage_201 :[0|600]
+ SG_ Pack_cellVoltage_202 :[0|600]
+ SG_ Pack_cellVoltage_203 :[0|600]
+ SG_ Pack_cellVoltage_204 :[0|600]
+
+BO_ 2561873907 Pack_cellVoltage_52: 8 Vector__XXX
+ SG_ Pack_cellVoltage_205 :[0|600]
+ SG_ Pack_cellVoltage_206 :[0|600]
+ SG_ Pack_cellVoltage_207 :[0|600]
+ SG_ Pack_cellVoltage_208 :[0|600]
+
+BO_ 2561939443 Pack_cellVoltage_53: 8 Vector__XXX
+ SG_ Pack_cellVoltage_209 :[0|600]
+ SG_ Pack_cellVoltage_210 :[0|600]
+ SG_ Pack_cellVoltage_211 :[0|600]
+ SG_ Pack_cellVoltage_212 :[0|600]
+
+BO_ 2562004979 Pack_cellVoltage_54: 8 Vector__XXX
+ SG_ Pack_cellVoltage_213 :[0|600]
+ SG_ Pack_cellVoltage_214 :[0|600]
+ SG_ Pack_cellVoltage_215 :[0|600]
+ SG_ Pack_cellVoltage_216 :[0|600]
+
+BO_ 2562070515 Pack_cellVoltage_55: 8 Vector__XXX
+ SG_ Pack_cellVoltage_217 :[0|600]
+ SG_ Pack_cellVoltage_218 :[0|600]
+ SG_ Pack_cellVoltage_219 :[0|600]
+ SG_ Pack_cellVoltage_220 :[0|600]
+
+BO_ 2562136051 Pack_cellVoltage_56: 8 Vector__XXX
+ SG_ Pack_cellVoltage_221 :[0|600]
+ SG_ Pack_cellVoltage_222 :[0|600]
+ SG_ Pack_cellVoltage_223 :[0|600]
+ SG_ Pack_cellVoltage_224 :[0|600]
+
+BO_ 2562201587 Pack_cellVoltage_57: 8 Vector__XXX
+ SG_ Pack_cellVoltage_225 :[0|600]
+ SG_ Pack_cellVoltage_226 :[0|600]
+ SG_ Pack_cellVoltage_227 :[0|600]
+ SG_ Pack_cellVoltage_228 :[0|600]
+
+BO_ 2562267123 Pack_cellVoltage_58: 8 Vector__XXX
+ SG_ Pack_cellVoltage_229 :[0|600]
+ SG_ Pack_cellVoltage_230 :[0|600]
+ SG_ Pack_cellVoltage_231 :[0|600]
+ SG_ Pack_cellVoltage_232 :[0|600]
+
+BO_ 2562332659 Pack_cellVoltage_59: 8 Vector__XXX
+ SG_ Pack_cellVoltage_233 :[0|600]
+ SG_ Pack_cellVoltage_234 :[0|600]
+ SG_ Pack_cellVoltage_235 :[0|600]
+ SG_ Pack_cellVoltage_236 :[0|600]
+
+BO_ 2562398195 Pack_cellVoltage_60: 8 Vector__XXX
+ SG_ Pack_cellVoltage_237 :[0|600]
+ SG_ Pack_cellVoltage_238 :[0|600]
+ SG_ Pack_cellVoltage_239 :[0|600]
+ SG_ Pack_cellVoltage_240 :[0|600]
+
+BO_ 2562463731 Pack_cellVoltage_61: 8 Vector__XXX
+ SG_ Pack_cellVoltage_241 :[0|600]
+ SG_ Pack_cellVoltage_242 :[0|600]
+ SG_ Pack_cellVoltage_243 :[0|600]
+ SG_ Pack_cellVoltage_244 :[0|600]
+
+BO_ 2562529267 Pack_cellVoltage_62: 8 Vector__XXX
+ SG_ Pack_cellVoltage_245 :[0|600]
+ SG_ Pack_cellVoltage_246 :[0|600]
+ SG_ Pack_cellVoltage_247 :[0|600]
+ SG_ Pack_cellVoltage_248 :[0|600]
+
+BO_ 2562594803 Pack_cellVoltage_63: 8 Vector__XXX
+ SG_ Pack_cellVoltage_249 :[0|600]
+ SG_ Pack_cellVoltage_250 :[0|600]
+ SG_ Pack_cellVoltage_251 :[0|600]
+ SG_ Pack_cellVoltage_252 :[0|600]
+
+BO_ 2562660339 Pack_cellVoltage_64: 8 Vector__XXX
+ SG_ Pack_cellVoltage_253 :[0|600]
+ SG_ Pack_cellVoltage_254 :[0|600]
+ SG_ Pack_cellVoltage_255 :[0|600]
+ SG_ Pack_cellVoltage_256 :[0|600]
+
+BO_ 2562725875 Pack_cellVoltage_65: 8 Vector__XXX
+ SG_ Pack_cellVoltage_257 :[0|600]
+ SG_ Pack_cellVoltage_258 :[0|600]
+ SG_ Pack_cellVoltage_259 :[0|600]
+ SG_ Pack_cellVoltage_260 :[0|600]
+
+BO_ 2562791411 Pack_cellVoltage_66: 8 Vector__XXX
+ SG_ Pack_cellVoltage_261 :[0|600]
+ SG_ Pack_cellVoltage_262 :[0|600]
+ SG_ Pack_cellVoltage_263 :[0|600]
+ SG_ Pack_cellVoltage_264 :[0|600]
+
+BO_ 2562856947 Pack_cellVoltage_67: 8 Vector__XXX
+ SG_ Pack_cellVoltage_265 :[0|600]
+ SG_ Pack_cellVoltage_266 :[0|600]
+ SG_ Pack_cellVoltage_267 :[0|600]
+ SG_ Pack_cellVoltage_268 :[0|600]
+
+BO_ 2562922483 Pack_cellVoltage_68: 8 Vector__XXX
+ SG_ Pack_cellVoltage_269 :[0|600]
+ SG_ Pack_cellVoltage_270 :[0|600]
+ SG_ Pack_cellVoltage_271 :[0|600]
+ SG_ Pack_cellVoltage_272 :[0|600]
+
+BO_ 2562988019 Pack_cellVoltage_69: 8 Vector__XXX
+ SG_ Pack_cellVoltage_273 :[0|600]
+ SG_ Pack_cellVoltage_274 :[0|600]
+ SG_ Pack_cellVoltage_275 :[0|600]
+ SG_ Pack_cellVoltage_276 :[0|600]
+
+BO_ 2563053555 Pack_cellVoltage_70: 8 Vector__XXX
+ SG_ Pack_cellVoltage_277 :[0|600]
+ SG_ Pack_cellVoltage_278 :[0|600]
+ SG_ Pack_cellVoltage_279 :[0|600]
+ SG_ Pack_cellVoltage_280 :[0|600]
+
+BO_ 2563119091 Pack_cellVoltage_71: 8 Vector__XXX
+ SG_ Pack_cellVoltage_281 :[0|600]
+ SG_ Pack_cellVoltage_282 :[0|600]
+ SG_ Pack_cellVoltage_283 :[0|600]
+ SG_ Pack_cellVoltage_284 :[0|600]
+
+BO_ 2563184627 Pack_cellVoltage_72: 8 Vector__XXX
+ SG_ Pack_cellVoltage_285 :[0|600]
+ SG_ Pack_cellVoltage_286 :[0|600]
+ SG_ Pack_cellVoltage_287 :[0|600]
+ SG_ Pack_cellVoltage_288 :[0|600]
+
+BO_ 2563250163 Pack_cellVoltage_73: 8 Vector__XXX
+ SG_ Pack_cellVoltage_289 :[0|600]
+ SG_ Pack_cellVoltage_290 :[0|600]
+ SG_ Pack_cellVoltage_291 :[0|600]
+ SG_ Pack_cellVoltage_292 :[0|600]
+
+BO_ 2563315699 Pack_cellVoltage_74: 8 Vector__XXX
+ SG_ Pack_cellVoltage_293 :[0|600]
+ SG_ Pack_cellVoltage_294 :[0|600]
+ SG_ Pack_cellVoltage_295 :[0|600]
+ SG_ Pack_cellVoltage_296 :[0|600]
+
+BO_ 2563381235 Pack_cellVoltage_75: 8 Vector__XXX
+ SG_ Pack_cellVoltage_297 :[0|600]
+ SG_ Pack_cellVoltage_298 :[0|600]
+ SG_ Pack_cellVoltage_299 :[0|600]
+ SG_ Pack_cellVoltage_300 :[0|600]
+
+BO_ 2563446771 Pack_cellVoltage_76: 8 Vector__XXX
+ SG_ Pack_cellVoltage_301 :[0|600]
+ SG_ Pack_cellVoltage_302 :[0|600]
+ SG_ Pack_cellVoltage_303 :[0|600]
+ SG_ Pack_cellVoltage_304 :[0|600]
+
+BO_ 2563512307 Pack_cellVoltage_77: 8 Vector__XXX
+ SG_ Pack_cellVoltage_305 :[0|600]
+ SG_ Pack_cellVoltage_306 :[0|600]
+ SG_ Pack_cellVoltage_307 :[0|600]
+ SG_ Pack_cellVoltage_308 :[0|600]
+
+BO_ 2563577843 Pack_cellVoltage_78: 8 Vector__XXX
+ SG_ Pack_cellVoltage_309 :[0|600]
+ SG_ Pack_cellVoltage_310 :[0|600]
+ SG_ Pack_cellVoltage_311 :[0|600]
+ SG_ Pack_cellVoltage_312 :[0|600]
+
+BO_ 2563643379 Pack_cellVoltage_79: 8 Vector__XXX
+ SG_ Pack_cellVoltage_313 :[0|600]
+ SG_ Pack_cellVoltage_314 :[0|600]
+ SG_ Pack_cellVoltage_315 :[0|600]
+ SG_ Pack_cellVoltage_316 :[0|600]
+
+BO_ 2563708915 Pack_cellVoltage_80: 8 Vector__XXX
+ SG_ Pack_cellVoltage_317 :[0|600]
+ SG_ Pack_cellVoltage_318 :[0|600]
+ SG_ Pack_cellVoltage_319 :[0|600]
+ SG_ Pack_cellVoltage_320 :[0|600]
+
+BO_ 2563774451 Pack_cellVoltage_81: 8 Vector__XXX
+ SG_ Pack_cellVoltage_321 :[0|600]
+ SG_ Pack_cellVoltage_322 :[0|600]
+ SG_ Pack_cellVoltage_323 :[0|600]
+ SG_ Pack_cellVoltage_324 :[0|600]
+
+BO_ 2563839987 Pack_cellVoltage_82: 8 Vector__XXX
+ SG_ Pack_cellVoltage_325 :[0|600]
+ SG_ Pack_cellVoltage_326 :[0|600]
+ SG_ Pack_cellVoltage_327 :[0|600]
+ SG_ Pack_cellVoltage_328 :[0|600]
+
+BO_ 2563905523 Pack_cellVoltage_83: 8 Vector__XXX
+ SG_ Pack_cellVoltage_329 :[0|600]
+ SG_ Pack_cellVoltage_330 :[0|600]
+ SG_ Pack_cellVoltage_331 :[0|600]
+ SG_ Pack_cellVoltage_332 :[0|600]
+
+BO_ 2563971059 Pack_cellVoltage_84: 8 Vector__XXX
+ SG_ Pack_cellVoltage_333 :[0|600]
+ SG_ Pack_cellVoltage_334 :[0|600]
+ SG_ Pack_cellVoltage_335 :[0|600]
+ SG_ Pack_cellVoltage_336 :[0|600]
+
+BO_ 2564036595 Pack_cellVoltage_85: 8 Vector__XXX
+ SG_ Pack_cellVoltage_337 :[0|600]
+ SG_ Pack_cellVoltage_338 :[0|600]
+ SG_ Pack_cellVoltage_339 :[0|600]
+ SG_ Pack_cellVoltage_340 :[0|600]
+
+BO_ 2564102131 Pack_cellVoltage_86: 8 Vector__XXX
+ SG_ Pack_cellVoltage_341 :[0|600]
+ SG_ Pack_cellVoltage_342 :[0|600]
+ SG_ Pack_cellVoltage_343 :[0|600]
+ SG_ Pack_cellVoltage_344 :[0|600]
+
+BO_ 2564167667 Pack_cellVoltage_87: 8 Vector__XXX
+ SG_ Pack_cellVoltage_345 :[0|600]
+ SG_ Pack_cellVoltage_346 :[0|600]
+ SG_ Pack_cellVoltage_347 :[0|600]
+ SG_ Pack_cellVoltage_348 :[0|600]
+
+BO_ 2564233203 Pack_cellVoltage_88: 8 Vector__XXX
+ SG_ Pack_cellVoltage_349 :[0|600]
+ SG_ Pack_cellVoltage_350 :[0|600]
+ SG_ Pack_cellVoltage_351 :[0|600]
+ SG_ Pack_cellVoltage_352 :[0|600]
+
+BO_ 2564298739 Pack_cellVoltage_89: 8 Vector__XXX
+ SG_ Pack_cellVoltage_353 :[0|600]
+ SG_ Pack_cellVoltage_354 :[0|600]
+ SG_ Pack_cellVoltage_355 :[0|600]
+ SG_ Pack_cellVoltage_356 :[0|600]
+
+BO_ 2564364275 Pack_cellVoltage_90: 8 Vector__XXX
+ SG_ Pack_cellVoltage_357 :[0|600]
+ SG_ Pack_cellVoltage_358 :[0|600]
+ SG_ Pack_cellVoltage_359 :[0|600]
+ SG_ Pack_cellVoltage_360 :[0|600]
+
+BO_ 2564429811 Pack_cellVoltage_91: 8 Vector__XXX
+ SG_ Pack_cellVoltage_361 :[0|600]
+ SG_ Pack_cellVoltage_362 :[0|600]
+ SG_ Pack_cellVoltage_363 :[0|600]
+ SG_ Pack_cellVoltage_364 :[0|600]
+
+BO_ 2564495347 Pack_cellVoltage_92: 8 Vector__XXX
+ SG_ Pack_cellVoltage_365 :[0|600]
+ SG_ Pack_cellVoltage_366 :[0|600]
+ SG_ Pack_cellVoltage_367 :[0|600]
+ SG_ Pack_cellVoltage_368 :[0|600]
+
+BO_ 2564560883 Pack_cellVoltage_93: 8 Vector__XXX
+ SG_ Pack_cellVoltage_369 :[0|600]
+ SG_ Pack_cellVoltage_370 :[0|600]
+ SG_ Pack_cellVoltage_371 :[0|600]
+ SG_ Pack_cellVoltage_372 :[0|600]
+
+BO_ 2564626419 Pack_cellVoltage_94: 8 Vector__XXX
+ SG_ Pack_cellVoltage_373 :[0|600]
+ SG_ Pack_cellVoltage_374 :[0|600]
+ SG_ Pack_cellVoltage_375 :[0|600]
+ SG_ Pack_cellVoltage_376 :[0|600]
+
+BO_ 2564691955 Pack_cellVoltage_95: 8 Vector__XXX
+ SG_ Pack_cellVoltage_377 :[0|600]
+ SG_ Pack_cellVoltage_378 :[0|600]
+ SG_ Pack_cellVoltage_379 :[0|600]
+ SG_ Pack_cellVoltage_380 :[0|600]
+
+BO_ 2564757491 Pack_cellVoltage_96: 8 Vector__XXX
+ SG_ Pack_cellVoltage_381 :[0|600]
+ SG_ Pack_cellVoltage_382 :[0|600]
+ SG_ Pack_cellVoltage_383 :[0|600]
+ SG_ Pack_cellVoltage_384 :[0|600]
+
+BO_ 2564823027 Pack_cellVoltage_97: 8 Vector__XXX
+ SG_ Pack_cellVoltage_385 :[0|600]
+ SG_ Pack_cellVoltage_386 :[0|600]
+ SG_ Pack_cellVoltage_387 :[0|600]
+ SG_ Pack_cellVoltage_388 :[0|600]
+
+BO_ 2564888563 Pack_cellVoltage_98: 8 Vector__XXX
+ SG_ Pack_cellVoltage_389 :[0|600]
+ SG_ Pack_cellVoltage_390 :[0|600]
+ SG_ Pack_cellVoltage_391 :[0|600]
+ SG_ Pack_cellVoltage_392 :[0|600]
+
+BO_ 2564954099 Pack_cellVoltage_99: 8 Vector__XXX
+ SG_ Pack_cellVoltage_393 :[0|600]
+ SG_ Pack_cellVoltage_394 :[0|600]
+ SG_ Pack_cellVoltage_395 :[0|600]
+ SG_ Pack_cellVoltage_396 :[0|600]
+
+BO_ 2565019635 Pack_cellVoltage_100: 8 Vector__XXX
+ SG_ Pack_cellVoltage_397 :[0|600]
+ SG_ Pack_cellVoltage_398 :[0|600]
+ SG_ Pack_cellVoltage_399 :[0|600]
+ SG_ Pack_cellVoltage_400 :[0|600]
+
+BO_ 2565085171 Pack_cellVoltage_101: 8 Vector__XXX
+ SG_ Pack_cellVoltage_401 :[0|600]
+ SG_ Pack_cellVoltage_402 :[0|600]
+ SG_ Pack_cellVoltage_403 :[0|600]
+ SG_ Pack_cellVoltage_404 :[0|600]
+
+BO_ 2565150707 Pack_cellVoltage_102: 8 Vector__XXX
+ SG_ Pack_cellVoltage_405 :[0|600]
+ SG_ Pack_cellVoltage_406 :[0|600]
+ SG_ Pack_cellVoltage_407 :[0|600]
+ SG_ Pack_cellVoltage_408 :[0|600]
+
+BO_ 2565216243 Pack_cellVoltage_103: 8 Vector__XXX
+ SG_ Pack_cellVoltage_409 :[0|600]
+ SG_ Pack_cellVoltage_410 :[0|600]
+ SG_ Pack_cellVoltage_411 :[0|600]
+ SG_ Pack_cellVoltage_412 :[0|600]
+
+BO_ 2565281779 Pack_cellVoltage_104: 8 Vector__XXX
+ SG_ Pack_cellVoltage_413 :[0|600]
+ SG_ Pack_cellVoltage_414 :[0|600]
+ SG_ Pack_cellVoltage_415 :[0|600]
+ SG_ Pack_cellVoltage_416 :[0|600]
+
+BO_ 2565347315 Pack_cellVoltage_105: 8 Vector__XXX
+ SG_ Pack_cellVoltage_417 :[0|600]
+ SG_ Pack_cellVoltage_418 :[0|600]
+ SG_ Pack_cellVoltage_419 :[0|600]
+ SG_ Pack_cellVoltage_420 :[0|600]
+
+BO_ 2565412851 Pack_cellVoltage_106: 8 Vector__XXX
+ SG_ Pack_cellVoltage_421 :[0|600]
+ SG_ Pack_cellVoltage_422 :[0|600]
+ SG_ Pack_cellVoltage_423 :[0|600]
+ SG_ Pack_cellVoltage_424 :[0|600]
+
+BO_ 2565478387 Pack_cellVoltage_107: 8 Vector__XXX
+ SG_ Pack_cellVoltage_425 :[0|600]
+ SG_ Pack_cellVoltage_426 :[0|600]
+ SG_ Pack_cellVoltage_427 :[0|600]
+ SG_ Pack_cellVoltage_428 :[0|600]
+
+BO_ 2565543923 Pack_cellVoltage_108: 8 Vector__XXX
+ SG_ Pack_cellVoltage_429 :[0|600]
+ SG_ Pack_cellVoltage_430 :[0|600]
+ SG_ Pack_cellVoltage_431 :[0|600]
+ SG_ Pack_cellVoltage_432 :[0|600]
+
+BO_ 2565609459 Pack_cellVoltage_109: 8 Vector__XXX
+ SG_ Pack_cellVoltage_433 :[0|600]
+ SG_ Pack_cellVoltage_434 :[0|600]
+ SG_ Pack_cellVoltage_435 :[0|600]
+ SG_ Pack_cellVoltage_436 :[0|600]
+
+BO_ 2565674995 Pack_cellVoltage_110: 8 Vector__XXX
+ SG_ Pack_cellVoltage_437 :[0|600]
+ SG_ Pack_cellVoltage_438 :[0|600]
+ SG_ Pack_cellVoltage_439 :[0|600]
+ SG_ Pack_cellVoltage_440 :[0|600]
+
+BO_ 2565740531 Pack_cellVoltage_111: 8 Vector__XXX
+ SG_ Pack_cellVoltage_441 :[0|600]
+ SG_ Pack_cellVoltage_442 :[0|600]
+ SG_ Pack_cellVoltage_443 :[0|600]
+ SG_ Pack_cellVoltage_444 :[0|600]
+
+BO_ 2565806067 Pack_cellVoltage_112: 8 Vector__XXX
+ SG_ Pack_cellVoltage_445 :[0|600]
+ SG_ Pack_cellVoltage_446 :[0|600]
+ SG_ Pack_cellVoltage_447 :[0|600]
+ SG_ Pack_cellVoltage_448 :[0|600]
+
+BO_ 2565871603 Pack_cellVoltage_113: 8 Vector__XXX
+ SG_ Pack_cellVoltage_449 :[0|600]
+ SG_ Pack_cellVoltage_450 :[0|600]
+ SG_ Pack_cellVoltage_451 :[0|600]
+ SG_ Pack_cellVoltage_452 :[0|600]
+
+BO_ 2565937139 Pack_cellVoltage_114: 8 Vector__XXX
+ SG_ Pack_cellVoltage_453 :[0|600]
+ SG_ Pack_cellVoltage_454 :[0|600]
+ SG_ Pack_cellVoltage_455 :[0|600]
+ SG_ Pack_cellVoltage_456 :[0|600]
+
+BO_ 2566002675 Pack_cellVoltage_115: 8 Vector__XXX
+ SG_ Pack_cellVoltage_457 :[0|600]
+ SG_ Pack_cellVoltage_458 :[0|600]
+ SG_ Pack_cellVoltage_459 :[0|600]
+ SG_ Pack_cellVoltage_460 :[0|600]
+
+BO_ 2566068211 Pack_cellVoltage_116: 8 Vector__XXX
+ SG_ Pack_cellVoltage_461 :[0|600]
+ SG_ Pack_cellVoltage_462 :[0|600]
+ SG_ Pack_cellVoltage_463 :[0|600]
+ SG_ Pack_cellVoltage_464 :[0|600]
+
+BO_ 2566133747 Pack_cellVoltage_117: 8 Vector__XXX
+ SG_ Pack_cellVoltage_465 :[0|600]
+ SG_ Pack_cellVoltage_466 :[0|600]
+ SG_ Pack_cellVoltage_467 :[0|600]
+ SG_ Pack_cellVoltage_468 :[0|600]
+
+BO_ 2566199283 Pack_cellVoltage_118: 8 Vector__XXX
+ SG_ Pack_cellVoltage_469 :[0|600]
+ SG_ Pack_cellVoltage_470 :[0|600]
+ SG_ Pack_cellVoltage_471 :[0|600]
+ SG_ Pack_cellVoltage_472 :[0|600]
+
+BO_ 2566264819 Pack_cellVoltage_119: 8 Vector__XXX
+ SG_ Pack_cellVoltage_473 :[0|600]
+ SG_ Pack_cellVoltage_474 :[0|600]
+ SG_ Pack_cellVoltage_475 :[0|600]
+ SG_ Pack_cellVoltage_476 :[0|600]
+
+BO_ 2566330355 Pack_cellVoltage_120: 8 Vector__XXX
+ SG_ Pack_cellVoltage_477 :[0|600]
+ SG_ Pack_cellVoltage_478 :[0|600]
+ SG_ Pack_cellVoltage_479 :[0|600]
+ SG_ Pack_cellVoltage_480 :[0|600]
+
+BO_ 2566395891 Pack_cellVoltage_121: 8 Vector__XXX
+ SG_ Pack_cellVoltage_481 :[0|600]
+ SG_ Pack_cellVoltage_482 :[0|600]
+ SG_ Pack_cellVoltage_483 :[0|600]
+ SG_ Pack_cellVoltage_484 :[0|600]
+
+BO_ 2566461427 Pack_cellVoltage_122: 8 Vector__XXX
+ SG_ Pack_cellVoltage_485 :[0|600]
+ SG_ Pack_cellVoltage_486 :[0|600]
+ SG_ Pack_cellVoltage_487 :[0|600]
+ SG_ Pack_cellVoltage_488 :[0|600]
+
+BO_ 2566526963 Pack_cellVoltage_123: 8 Vector__XXX
+ SG_ Pack_cellVoltage_489 :[0|600]
+ SG_ Pack_cellVoltage_490 :[0|600]
+ SG_ Pack_cellVoltage_491 :[0|600]
+ SG_ Pack_cellVoltage_492 :[0|600]
+
+BO_ 2566592499 Pack_cellVoltage_124: 8 Vector__XXX
+ SG_ Pack_cellVoltage_493 :[0|600]
+ SG_ Pack_cellVoltage_494 :[0|600]
+ SG_ Pack_cellVoltage_495 :[0|600]
+ SG_ Pack_cellVoltage_496 :[0|600]
+
+BO_ 2566658035 Pack_cellVoltage_125: 8 Vector__XXX
+ SG_ Pack_cellVoltage_497 :[0|600]
+ SG_ Pack_cellVoltage_498 :[0|600]
+ SG_ Pack_cellVoltage_499 :[0|600]
+ SG_ Pack_cellVoltage_500 :[0|600]
+
+BO_ 2566723571 Pack_cellVoltage_126: 8 Vector__XXX
+ SG_ Pack_cellVoltage_501 :[0|600]
+ SG_ Pack_cellVoltage_502 :[0|600]
+ SG_ Pack_cellVoltage_503 :[0|600]
+ SG_ Pack_cellVoltage_504 :[0|600]
+
+BO_ 2566789107 Pack_cellVoltage_127: 8 Vector__XXX
+ SG_ Pack_cellVoltage_505 :[0|600]
+ SG_ Pack_cellVoltage_506 :[0|600]
+ SG_ Pack_cellVoltage_507 :[0|600]
+ SG_ Pack_cellVoltage_508 :[0|600]
+
+BO_ 2566854643 Pack_cellVoltage_128: 8 Vector__XXX
+ SG_ Pack_cellVoltage_509 :[0|600]
+ SG_ Pack_cellVoltage_510 :[0|600]
+ SG_ Pack_cellVoltage_511 :[0|600]
+ SG_ Pack_cellVoltage_512 :[0|600]
+
+BO_ 2566920179 Pack_cellVoltage_129: 8 Vector__XXX
+ SG_ Pack_cellVoltage_513 :[0|600]
+ SG_ Pack_cellVoltage_514 :[0|600]
+ SG_ Pack_cellVoltage_515 :[0|600]
+ SG_ Pack_cellVoltage_516 :[0|600]
+
+BO_ 2566985715 Pack_cellVoltage_130: 8 Vector__XXX
+ SG_ Pack_cellVoltage_517 :[0|600]
+ SG_ Pack_cellVoltage_518 :[0|600]
+ SG_ Pack_cellVoltage_519 :[0|600]
+ SG_ Pack_cellVoltage_520 :[0|600]
+
+BO_ 2567051251 Pack_cellVoltage_131: 8 Vector__XXX
+ SG_ Pack_cellVoltage_521 :[0|600]
+ SG_ Pack_cellVoltage_522 :[0|600]
+ SG_ Pack_cellVoltage_523 :[0|600]
+ SG_ Pack_cellVoltage_524 :[0|600]
+
+BO_ 2567116787 Pack_cellVoltage_132: 8 Vector__XXX
+ SG_ Pack_cellVoltage_525 :[0|600]
+ SG_ Pack_cellVoltage_526 :[0|600]
+ SG_ Pack_cellVoltage_527 :[0|600]
+ SG_ Pack_cellVoltage_528 :[0|600]
+
+BO_ 2567182323 Pack_cellVoltage_133: 8 Vector__XXX
+ SG_ Pack_cellVoltage_529 :[0|600]
+ SG_ Pack_cellVoltage_530 :[0|600]
+ SG_ Pack_cellVoltage_531 :[0|600]
+ SG_ Pack_cellVoltage_532 :[0|600]
+
+BO_ 2567247859 Pack_cellVoltage_134: 8 Vector__XXX
+ SG_ Pack_cellVoltage_533 :[0|600]
+ SG_ Pack_cellVoltage_534 :[0|600]
+ SG_ Pack_cellVoltage_535 :[0|600]
+ SG_ Pack_cellVoltage_536 :[0|600]
+
+BO_ 2567313395 Pack_cellVoltage_135: 8 Vector__XXX
+ SG_ Pack_cellVoltage_537 :[0|600]
+ SG_ Pack_cellVoltage_538 :[0|600]
+ SG_ Pack_cellVoltage_539 :[0|600]
+ SG_ Pack_cellVoltage_540 :[0|600]
+
+BO_ 2567378931 Pack_cellVoltage_136: 8 Vector__XXX
+ SG_ Pack_cellVoltage_541 :[0|600]
+ SG_ Pack_cellVoltage_542 :[0|600]
+ SG_ Pack_cellVoltage_543 :[0|600]
+ SG_ Pack_cellVoltage_544 :[0|600]
+
+BO_ 2567444467 Pack_cellVoltage_137: 8 Vector__XXX
+ SG_ Pack_cellVoltage_545 :[0|600]
+ SG_ Pack_cellVoltage_546 :[0|600]
+ SG_ Pack_cellVoltage_547 :[0|600]
+ SG_ Pack_cellVoltage_548 :[0|600]
+
+BO_ 2567510003 Pack_cellVoltage_138: 8 Vector__XXX
+ SG_ Pack_cellVoltage_549 :[0|600]
+ SG_ Pack_cellVoltage_550 :[0|600]
+ SG_ Pack_cellVoltage_551 :[0|600]
+ SG_ Pack_cellVoltage_552 :[0|600]
+
+BO_ 2567575539 Pack_cellVoltage_139: 8 Vector__XXX
+ SG_ Pack_cellVoltage_553 :[0|600]
+ SG_ Pack_cellVoltage_554 :[0|600]
+ SG_ Pack_cellVoltage_555 :[0|600]
+ SG_ Pack_cellVoltage_556 :[0|600]
+
+BO_ 2567641075 Pack_cellVoltage_140: 8 Vector__XXX
+ SG_ Pack_cellVoltage_557 :[0|600]
+ SG_ Pack_cellVoltage_558 :[0|600]
+ SG_ Pack_cellVoltage_559 :[0|600]
+ SG_ Pack_cellVoltage_560 :[0|600]
+
+BO_ 2567706611 Pack_cellVoltage_141: 8 Vector__XXX
+ SG_ Pack_cellVoltage_561 :[0|600]
+ SG_ Pack_cellVoltage_562 :[0|600]
+ SG_ Pack_cellVoltage_563 :[0|600]
+ SG_ Pack_cellVoltage_564 :[0|600]
+
+BO_ 2567772147 Pack_cellVoltage_142: 8 Vector__XXX
+ SG_ Pack_cellVoltage_565 :[0|600]
+ SG_ Pack_cellVoltage_566 :[0|600]
+ SG_ Pack_cellVoltage_567 :[0|600]
+ SG_ Pack_cellVoltage_568 :[0|600]
+
+BO_ 2567837683 Pack_cellVoltage_142: 8 Vector__XXX
+ SG_ Pack_cellVoltage_569 :[0|600]
+ SG_ Pack_cellVoltage_570 :[0|600]
+ SG_ Pack_cellVoltage_571 :[0|600]
+ SG_ Pack_cellVoltage_572 :[0|600]
+
+BO_ 2567903219 Pack_cellVoltage_142: 8 Vector__XXX
+ SG_ Pack_cellVoltage_573 :[0|600]
+ SG_ Pack_cellVoltage_574 :[0|600]
+ SG_ Pack_cellVoltage_575 :[0|600]
+ SG_ Pack_cellVoltage_576 :[0|600]
+
+ SG_ CCS_SPN3082_OutCurrent_2 :[-400|6153.5]
+ SG_ CCS_SPN3081_OutVolt_2 :[0|6553.5]
+
+ SG_ BCL_SPN3073_CurrtRequest2_2 :[-400|6153.5]
+ SG_ BCL_SPN3072_VoltRequest2_2 :[0|6553.5]
+
+ SG_ CCS_SPN3082_OutCurrent :[-400|6153.5]
+ SG_ CCS_SPN3081_OutVolt :[0|6553.5]
+
+ SG_ BCL_SPN3073_CurrtRequest2 :[-400|6153.5]
+ SG_ BCL_SPN3072_VoltRequest2 :[0|6553.5]
+
