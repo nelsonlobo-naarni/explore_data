@@ -226,6 +226,27 @@ def _excel_table(data, col_widths, title):
     tbl.setStyle(style)
     return tbl
 
+def export_charging_conditions_csv(metric_buckets: dict, output_csv: str):
+    """
+    Converts metric_buckets into a CSV table:
+    Metric | <20% | 20-30% | 30-40% | >40%
+    """
+    rows = []
+
+    for metric, buckets in metric_buckets.items():
+        rows.append({
+            "Metric": metric,
+            "<20%": ", ".join(map(str, buckets["<20%"])) if buckets["<20%"] else "NONE",
+            "20-30%": ", ".join(map(str, buckets["20-30%"])) if buckets["20-30%"] else "NONE",
+            "30-40%": ", ".join(map(str, buckets["30-40%"])) if buckets["30-40%"] else "NONE",
+            ">40%": ", ".join(map(str, buckets[">40%"])) if buckets[">40%"] else "NONE",
+        })
+
+    df = pd.DataFrame(rows)
+    df.to_csv(output_csv, index=False)
+    logging.info(f"📁 Charging conditions CSV saved → {output_csv}")
+
+
 
 def _intro_story():
     """Introductory page content."""
@@ -265,26 +286,36 @@ def _intro_story():
 def build_condition_bucket_table(metric_buckets: dict):
     """
     Builds a single table summarizing:
-        Metric | 20–30% | 30–40% | >40%
+        Metric | <20% | 20–30% | 30–40% | >40%
     """
     DISPLAY = {
+        "<20%": "<20%",
         "20-30%": "20–30%",
         "30-40%": "30–40%",
         ">40%": ">40%",
     }
 
-    data = [["Metric", "20-30%", "30-40%", ">40%"]]
+    data = [["Metric","<20%", "20-30%", "30-40%", ">40%"]]
 
     for metric, cats in metric_buckets.items():
         row = [
             metric,
-            ", ".join(map(str, cats["20-30%"])) if cats["20-30%"] else "",
-            ", ".join(map(str, cats["30-40%"])) if cats["30-40%"] else "",
-            ", ".join(map(str, cats[">40%"])) if cats[">40%"] else "",
+            ", ".join(map(str, cats["<20%"])) if cats["<20%"] else "none",
+            ", ".join(map(str, cats["20-30%"])) if cats["20-30%"] else "none",
+            ", ".join(map(str, cats["30-40%"])) if cats["30-40%"] else "none",
+            ", ".join(map(str, cats[">40%"])) if cats[">40%"] else "none",
         ]
         data.append(row)
 
-    col_widths = [60 * mm, 50 * mm, 50 * mm, 50 * mm]
+    # col_widths = [50 * mm, 40 * mm, 40 * mm, 40 * mm, 40 * mm]
+    col_widths = [
+        50 * mm,   # Metric
+        70 * mm,   # <20% (widest)
+        40 * mm,   # 20-30%
+        40 * mm,   # 30-40%
+        40 * mm,   # >40%
+    ]
+    
 
     tbl = Table(data, colWidths=col_widths)
     tbl.setStyle(TableStyle([
@@ -547,6 +578,7 @@ def compute_charging_condition_buckets(df: pd.DataFrame):
 
         # Bucketize
         buckets = {
+            "<20%": [vid for vid, p in pct_per_vehicle.items() if p < 20],
             "20-30%": [vid for vid, p in pct_per_vehicle.items() if 20 <= p < 30],
             "30-40%": [vid for vid, p in pct_per_vehicle.items() if 30 <= p < 40],
             ">40%":   [vid for vid, p in pct_per_vehicle.items() if p >= 40],
@@ -592,6 +624,8 @@ def run_stage_2(
 
     df_cond = pd.read_feather(feather_path, columns=cols_needed)
     charging_condition_buckets = compute_charging_condition_buckets(df_cond)
+    export_charging_conditions_csv(charging_condition_buckets,output_csv="charging_condition_buckets.csv")
+    
 
     logging.info(f"Stage 2: loaded df_cond with {len(df_cond):,} rows.")
 
