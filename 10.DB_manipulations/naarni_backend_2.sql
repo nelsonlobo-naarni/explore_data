@@ -962,7 +962,7 @@ COPY public.vehicle_rest_days (id, created_at, last_modified_at, vehicle_id, res
 -- Data for Name: vehicle_route_mappings; Type: TABLE DATA; Schema: public; Owner: naarni_backend_service
 --
 
-COPY public.vehicle_route_mappings (id, created_at, last_modified_at, vehicle_id, route_id, assignment_start_date, assignment_end_date, notes, ended_at, ended_by, end_reason) FROM stdin;
+COPY public.s (id, created_at, last_modified_at, vehicle_id, route_id, assignment_start_date, assignment_end_date, notes, ended_at, ended_by, end_reason) FROM stdin;
 2	2025-11-20 06:16:34.89493+00	2025-11-20 06:16:34.89493+00	2	3	2025-07-01 00:00:00+00	\N	\N	\N	\N	\N
 3	2025-11-20 06:20:16.70152+00	2025-11-20 06:20:16.70152+00	4	3	2025-07-01 00:00:00+00	\N	\N	\N	\N	\N
 7	2025-11-20 06:23:38.28901+00	2025-11-20 06:23:38.28901+00	7	3	2025-07-01 00:00:00+00	\N	\N	\N	\N	\N
